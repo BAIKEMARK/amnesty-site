@@ -213,7 +213,7 @@ class BilibiliClient:
         seen: set[str] = set()
         offset: str | None = None
         next_page = 0
-        seen_offsets: set[str] = set()
+        seen_cursors: set[tuple[int, str]] = set()
 
         def add(item: dict[str, Any]) -> None:
             rid = str(item.get("rpid") or "")
@@ -250,6 +250,10 @@ class BilibiliClient:
                 page_number += 1
 
         while True:
+            request_cursor = (next_page, offset or "")
+            if request_cursor in seen_cursors:
+                raise BilibiliError(f"评论分页游标重复，内容 {oid} 的抓取未完成")
+            seen_cursors.add(request_cursor)
             params: dict[str, Any] = {"oid": oid, "type": comment_type, "mode": 3, "next": next_page, "ps": 20}
             params["pagination_str"] = json.dumps({"offset": offset or ""}, separators=(",", ":"))
             data = self._comment_json(self.API + "/x/v2/reply/main", params=params).get("data") or {}
@@ -270,9 +274,6 @@ class BilibiliClient:
             if not offset:
                 raise BilibiliError(f"评论分页游标缺失，内容 {oid} 的抓取未完成")
             offset = str(offset)
-            if offset in seen_offsets:
-                raise BilibiliError(f"评论分页游标重复，内容 {oid} 的抓取未完成")
-            seen_offsets.add(offset)
             next_page = int(cursor.get("next") or (next_page + 1))
 
     def get_owned_videos(self, limit: int = 0) -> list[dict[str, Any]]:
