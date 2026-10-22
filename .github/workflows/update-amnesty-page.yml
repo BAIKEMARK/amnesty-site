@@ -32,7 +32,12 @@ jobs:
       - name: Install the Bilibili client dependency
         run: python -m pip install "requests>=2.28"
       - name: Fetch visible comments and rebuild the page
+        id: fetch
+        continue-on-error: true
         run: python generate_amnesty_list.py --fetch --output amnesty-site/index.html
+      - name: Keep the previous page when a refresh fails
+        if: steps.fetch.outcome == 'failure'
+        run: echo "Refresh failed; publishing the last successful page instead."
       - name: Commit the page when its contents changed
         run: |
           git config user.name "github-actions[bot]"
