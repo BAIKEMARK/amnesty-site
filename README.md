@@ -72,7 +72,7 @@ python generate_amnesty_list.py --fetch --output .\amnesty-site\index.html
 
 #### 不买云服务器，自动每两小时更新并发布
 
-仓库已包含 GitHub Actions 工作流 `.github/workflows/update-amnesty-page.yml`：每两小时抓取一次，更新名单并直接发布到 GitHub Pages；不需要自有云服务器或 Vercel。也可在 GitHub Actions 页面手动运行 `Update amnesty list page`。
+仓库已包含 GitHub Actions 工作流 `.github/workflows/update-amnesty-page.yml`：每两小时抓取一次，更新名单并提交到 GitHub Pages 的 `main` 分支根目录；不需要自有云服务器或 Vercel。也可在 GitHub Actions 页面手动运行 `Update amnesty list page`。
 
 在 GitHub 仓库的 **Settings → Secrets and variables → Actions** 添加 `BILI_SESSDATA`、`BILI_JCT`、`BILI_USER_ID` 三个 Actions secrets。Cookie 只存为 GitHub 加密 Secrets，不会写进代码、网页或评论 CSV。
 
