@@ -18,9 +18,6 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     env:
       BILI_AGENT_BILI_SESSDATA: ${{ secrets.BILI_SESSDATA }}
       BILI_AGENT_BILI_JCT: ${{ secrets.BILI_JCT }}
@@ -53,6 +50,14 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: amnesty-site
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: refresh
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy the generated site
         id: deployment
         uses: actions/deploy-pages@v4
