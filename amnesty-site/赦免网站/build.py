@@ -147,11 +147,55 @@ def portal_html(sites: list[dict] | None = None) -> str:
     )
 
 
+def hosting_headers(sites: list[dict]) -> str:
+    """Cloudflare Pages 的 _headers 语法（Vercel 侧走 vercel.json，互不干扰）。
+
+    数据文件必须每次回源验证，否则站点会停在 2 小时前的那一版；
+    其余静态文件带上 nosniff / referrer 头做兜底。
+    """
+    blocks = []
+    for site in sites:
+        prefix = site["href"].rstrip("/")
+        for name in ("data.js", "status.json"):
+            blocks.append(
+                f"{prefix}/{name}\n"
+                "  Cache-Control: public, max-age=0, must-revalidate\n"
+            )
+    blocks.append(
+        "/*\n"
+        "  X-Content-Type-Options: nosniff\n"
+        "  Referrer-Policy: no-referrer\n"
+    )
+    return "\n".join(blocks)
+
+
+NOT_FOUND_PAGE = """<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>没有这个页面</title>
+<style>
+body{margin:0;min-height:100vh;background:#10172b;color:#e7edfa;display:flex;
+  flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  font:16px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  background-image:radial-gradient(1000px 520px at 50% -14%,rgba(90,132,255,.22),transparent 68%)}
+b{font-size:64px;letter-spacing:.06em;background:linear-gradient(180deg,#f4f8ff,#8fb0ee);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+p{margin:0;color:#93a4c4}
+a{margin-top:22px;color:#84a8ff;text-decoration:none;font-weight:600}
+a:hover{text-decoration:underline}
+</style></head><body>
+<b>404</b><p>这条路上什么也没有。</p><a href="/">回鲸鱼娘首页</a>
+</body></html>"""
+
+
 def write_portal(out: Path | str, sites: list[dict] | None = None) -> Path:
+    """写门户页，顺带补齐托管平台需要的 _headers 与 404 页。"""
+    sites = sites or PORTAL_SITES
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
     target = out / "index.html"
     target.write_text(portal_html(sites), encoding="utf-8")
+    (out / "_headers").write_text(hosting_headers(sites), encoding="utf-8")
+    (out / "404.html").write_text(NOT_FOUND_PAGE, encoding="utf-8")
     return target
 
 

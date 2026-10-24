@@ -6,12 +6,36 @@
 
 ## 站点
 
-部署在 Vercel，产物是 `amnesty-site/赦免网站/dist`（由 `vercel.json` 指定，控制台选 Other 即可，不需要构建命令）。
+产物是 `amnesty-site/赦免网站/dist`，由 GitHub Actions 重新生成后提交进仓库，托管平台只需发布这个目录、**不需要构建命令**。
 
-- `index.html` 首页
-- `archive.html` 完整名册
-- `data.js` 名册数据（约 6 MB，独立文件，不缓存）
-- `status.json` 上一次抓取的结果、耗时、被平台分页截断的内容
+```
+dist/
+├── index.html          门户页（2 KB，纯 CSS）
+├── 404.html            自定义 404
+├── _headers            Cloudflare Pages 的缓存与安全头
+└── amnesty/            赦免名单子站
+    ├── index.html      首页
+    ├── archive.html    完整名册
+    ├── data.js         名册数据（约 6 MB，独立文件，强制回源验证）
+    └── status.json     上一次抓取的结果、耗时、被平台分页截断的内容
+```
+
+站点让出根路径，`/amnesty/` 只是第一个子站，以后加别的页面直接放 `dist/<名字>/` 即可，不用动已有链接。
+
+### 部署
+
+主站在 **Cloudflare Pages**：
+
+| 项 | 值 |
+|---|---|
+| 连接 | 仓库 `BAIKEMARK/amnesty-site`，分支 `main` |
+| 构建命令 | 留空 |
+| 构建输出目录 | `amnesty-site/赦免网站/dist` |
+| 自定义域名 | `whalegirl.marbai.com`（CNAME 指向 `<项目名>.pages.dev`） |
+
+免费额度：带宽与请求**不限**，只有「每月 500 次构建」的限制。当前每次提交 `dist` 触发一次部署，每 2 小时一轮约 360 次/月，余量够但不宽裕。
+
+`vercel.json` 保留着，Vercel 那边仍可作为备份站使用；两边的缓存规则各自生效，互不影响。
 
 ## 数据怎么来的
 
@@ -41,7 +65,7 @@ B 站公开评论 / 私信
 | 每周日 03:17 UTC | 全量对账，补增量可能漏掉的角落 |
 | 手动 `workflow_dispatch` | 可勾选「强制全量」 |
 
-每次跑完自动提交 `data.json` / `dist` / `status.json` / `avatars.json` / `crawl-state.json`，Vercel 随之重新部署。抓取失败时不会覆盖上一次的数据，只把 `status.json` 的 `result` 写成 `failed`。
+每次跑完自动提交 `data.json` / `dist` / `status.json` / `avatars.json` / `crawl-state.json`，托管平台随之重新部署。抓取失败时不会覆盖上一次的数据，只把 `status.json` 的 `result` 写成 `failed`。
 
 需要的 Secrets：
 
