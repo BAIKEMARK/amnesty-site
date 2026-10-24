@@ -35,6 +35,9 @@ jobs:
       BILI_AGENT_LLM_API_KEY: ${{ secrets.BILI_AGENT_LLM_API_KEY || secrets.BILI_AGENT_API_KEY }}
       BILI_AGENT_BASE_URL: ${{ secrets.BILI_AGENT_BASE_URL }}
       BILI_AGENT_CHAT_MODEL: ${{ secrets.BILI_AGENT_CHAT_MODEL }}
+      # 可选：发布到 Cloudflare Pages；没配就只提交产物，不部署
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -59,6 +62,7 @@ jobs:
         continue-on-error: true
         run: python amnesty-site/refresh.py --fetch --judge jev ${{ steps.mode.outputs.flag }}
       - name: 提交数据与构建产物
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -70,10 +74,27 @@ jobs:
           done
           if git diff --cached --quiet; then
             echo "数据没有变化，跳过提交。"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             git commit -m "Refresh amnesty roster data"
             git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+      - name: 发布到 Cloudflare Pages
+        # 直传 dist 而不走 Cloudflare 的 Git 构建：仓库路径含中文，交给 CF 构建环境
+        # 解析容易出问题；直传也省掉它拉代码装依赖的时间。
+        if: steps.refresh.outcome == 'success'
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "未配置 Cloudflare 密钥，跳过发布（站点仍可用上一次的部署）。"
+            exit 0
+          fi
+          npx --yes wrangler@4 pages project create whalegirl --production-branch=main 2>/dev/null || true
+          npx --yes wrangler@4 pages deploy "amnesty-site/赦免网站/dist" \
+            --project-name=whalegirl \
+            --branch=main \
+            --commit-hash="${{ github.sha }}" \
+            --commit-message="Refresh amnesty roster data"
       - name: 失败时让任务标红
         if: steps.refresh.outcome == 'failure'
         run: |

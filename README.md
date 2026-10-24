@@ -24,18 +24,19 @@ dist/
 
 ### 部署
 
-主站在 **Cloudflare Pages**：
+主站在 **Cloudflare Pages**，用 Direct Upload 直传 `dist`，不经过 Cloudflare 的构建环境（仓库路径含中文，交给它构建容易解析出错；直传也省掉拉代码装依赖的时间）。
 
 | 项 | 值 |
 |---|---|
-| 连接 | 仓库 `BAIKEMARK/amnesty-site`，分支 `main` |
-| 构建命令 | 留空 |
-| 构建输出目录 | `amnesty-site/赦免网站/dist` |
-| 自定义域名 | `whalegirl.marbai.com`（CNAME 指向 `<项目名>.pages.dev`） |
+| 项目名 | `whalegirl` → `whalegirl.pages.dev` |
+| 部署触发 | `update-amnesty-site.yml` 最后一个步骤跑 `wrangler pages deploy` |
+| 自定义域名 | `whalegirl.marbai.com`，CNAME 指向 `whalegirl.pages.dev` |
 
-免费额度：带宽与请求**不限**，只有「每月 500 次构建」的限制。当前每次提交 `dist` 触发一次部署，每 2 小时一轮约 360 次/月，余量够但不宽裕。
+免费额度：带宽与请求**不限**，只有「每月 500 次部署 + 500 次构建」的限制。现在每 2 小时一轮约 360 次/月，余量够用；如果以后改成 1 小时一轮就会超。
 
-`vercel.json` 保留着，Vercel 那边仍可作为备份站使用；两边的缓存规则各自生效，互不影响。
+没配 `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` 时，工作流照常抓取和提交，只是跳过部署（不会报红）。
+
+`vercel.json` 保留着，Vercel 那边仍可作为备份站；两边的缓存规则各自生效，互不影响。
 
 ## 数据怎么来的
 
@@ -75,6 +76,8 @@ B 站公开评论 / 私信
 | `BILI_AGENT_BILI_JCT` | 否 | 只用于写操作，本仓库的读取流程不需要 |
 | `BILI_AGENT_BILI_USER_ID` | 是 | 确定抓哪个账号的投稿与动态 |
 | `TYPESAFE_API_KEYS` | 建议 | Jev 钥匙，多个用逗号或换行分隔；不配则灰区全收 |
+| `CLOUDFLARE_API_TOKEN` | 部署用 | 权限只需 `Cloudflare Pages:Edit`；不配则不部署 |
+| `CLOUDFLARE_ACCOUNT_ID` | 部署用 | 账户 ID，Cloudflare 仪表盘 URL 里那串 32 位十六进制 |
 
 ## 本地跑
 
