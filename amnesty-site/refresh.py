@@ -321,7 +321,7 @@ def main(argv: list[str] | None = None) -> int:
     builder = load_builder(site)
     # 站点挂在 /amnesty/ 子路径下，根目录留给门户页（以后加别的子站）。
     builder.build(standalone=False, out=site / "dist", subdir="amnesty")
-    builder.write_portal(site / "dist")
+    builder.write_site_meta(site / "dist")
     if args.standalone:
         builder.build(standalone=True, out=site / "dist-standalone")
     write_status(

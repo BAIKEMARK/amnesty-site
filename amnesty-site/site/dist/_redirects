@@ -1,0 +1,3 @@
+# 根路径直接进子站，不保留门户页
+/            /amnesty/  301
+/index.html  /amnesty/  301
