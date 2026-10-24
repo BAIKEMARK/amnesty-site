@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 3 · 人类特赦名单</title>
+<style>
+  :root { color-scheme: light; --ink:#263342; --blue:#173b5c; --gold:#c29335; --paper:#fff8e7; }
+  * { box-sizing:border-box; }
+  html { background:#e8edf2; }
+  body { margin:0; color:var(--ink); font-family:"Noto Sans CJK SC","Microsoft YaHei",sans-serif;
+         background:linear-gradient(135deg,#173b5c 0%,#3b6680 45%,#193852 100%); padding:42px 24px; }
+  .sheet { width:min(1200px,100%); margin:0 auto; padding:44px 50px 38px; border:10px solid #b98d43;
+           outline:2px solid #f4d991; outline-offset:-18px; background:radial-gradient(ellipse at top,#fffdf5,var(--paper) 70%);
+           box-shadow:0 18px 55px #081a2c88; }
+  header { text-align:center; padding:8px 10px 28px; border-bottom:2px solid #d8bd7a; }
+  .eyebrow { color:#9c742a; letter-spacing:.18em; font-size:17px; font-weight:700; }
+  h1 { color:var(--blue); font-size:48px; margin:12px 0 8px; letter-spacing:.12em; }
+  .sub { color:#65717a; font-size:17px; }
+  .grid { list-style:none; margin:25px 0 28px; padding:0; display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+          grid-auto-flow:row; column-gap:18px; row-gap:7px; }
+  .person { min-width:0; display:flex; align-items:baseline; gap:8px; padding:4px 7px; border-bottom:1px dotted #d9cba9;
+            font-size:14px; line-height:1.45; break-inside:avoid; }
+  .num { flex:0 0 31px; color:#a48a55; font:11px/1.4 ui-monospace,monospace; }
+  .name { overflow-wrap:anywhere; }
+  .highlight { background:#ffeb8a; border-radius:3px; border-bottom-color:#d7ad39; font-weight:700; }
+  .highlight .num { color:#856019; }
+  .date { text-align:center; color:#777; font-size:13px; margin:0 0 22px; }
+  .seal { width:max-content; max-width:100%; margin:0 auto; padding:8px 24px; border:3px double #b64738; color:#a63c31;
+          font-size:24px; font-weight:800; letter-spacing:.16em; transform:rotate(-3deg); }
+  .sign { text-align:center; margin:20px auto 0; color:#364958; line-height:1.9; font-size:16px; }
+  footer { margin-top:24px; padding-top:14px; border-top:1px solid #d8bd7a; text-align:center; color:#66727a; font-size:13px; line-height:1.8; }
+  .claim-zone { width:min(1200px,100%); margin:28px auto 0; padding:32px 38px; color:#263342; background:#f0f4f1; border-top:4px solid #477b70; }
+  .claim-layout { display:grid; grid-template-columns:minmax(230px,.7fr) minmax(0,1.3fr); gap:34px; align-items:center; }
+  .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  .claim-copy h2 { margin:0 0 10px; color:#173b5c; font-size:26px; }
+  .claim-copy p { margin:0 0 16px; color:#56656a; font-size:14px; line-height:1.8; }
+  .claim-form { display:flex; gap:8px; }
+  .claim-form input { min-width:0; flex:1; height:44px; padding:0 12px; border:1px solid #98aaa2; border-radius:3px; background:#fff; color:#263342; font:inherit; }
+  .claim-form button, .claim-actions button { min-height:42px; padding:0 15px; border:0; border-radius:3px; background:#a63c31; color:#fff; font:700 14px "Noto Sans CJK SC","Microsoft YaHei",sans-serif; cursor:pointer; }
+  .claim-form button:hover, .claim-actions button:hover { background:#842e27; }
+  .claim-form input:focus-visible, .claim-form button:focus-visible, .claim-actions button:focus-visible { outline:3px solid #c29335; outline-offset:2px; }
+  .claim-note { min-height:20px; margin:8px 0 0 !important; color:#7d342c !important; font-size:12px !important; }
+  .claim-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .claim-actions button { background:#315f59; }
+  .claim-actions button:hover { background:#244842; }
+  .claim-actions button:disabled { opacity:.45; cursor:not-allowed; }
+  .certificate { position:relative; min-width:0; padding:clamp(18px,3vw,38px); border:1px solid #bd8b3e; background:#f8f0d9; box-shadow:inset 0 0 0 6px #f8f0d9, inset 0 0 0 8px #a63c31; color:#273542; text-align:center; }
+  .certificate[hidden] { display:none; }
+  .certificate::before, .certificate::after { position:absolute; color:#a63c31; font-size:19px; line-height:1; }
+  .certificate::before { content:"✦"; top:18px; left:20px; }
+  .certificate::after { content:"✦"; right:20px; bottom:18px; }
+  .cert-kicker { color:#806128; font-size:12px; font-weight:700; letter-spacing:.12em; }
+  .cert-title { margin:7px 0 2px; color:#8d3028; font-family:"Noto Serif CJK SC","Songti SC","SimSun",serif; font-size:clamp(30px,4vw,44px); font-weight:900; }
+  .cert-subtitle { color:#65717a; font-size:12px; }
+  .cert-decree { margin:22px 0 5px; font-family:"Noto Serif CJK SC","Songti SC","SimSun",serif; font-size:15px; }
+  .cert-recipient { overflow-wrap:anywhere; margin:0 auto 10px; color:#173b5c; font-family:"Noto Serif CJK SC","Songti SC","SimSun",serif; font-size:clamp(25px,3.5vw,38px); font-weight:800; }
+  .cert-terms { max-width:640px; margin:0 auto; color:#46545a; font-size:13px; line-height:1.8; }
+  .cert-bottom { display:flex; justify-content:space-between; align-items:end; gap:12px; margin:20px auto 0; color:#6b6250; font:11px/1.5 ui-monospace,monospace; text-align:left; }
+  .cert-sign { display:flex; align-items:center; gap:8px; color:#7e3029; font-family:"Noto Serif CJK SC","Songti SC","SimSun",serif; font-size:13px; font-weight:700; }
+  .cert-seal { display:inline-grid; width:42px; aspect-ratio:1; place-items:center; border:3px double #a63c31; color:#a63c31; font-size:20px; transform:rotate(-8deg); }
+  .cert-disclaimer { margin:12px 0 0; color:#837b69; font-size:10px; }
+  @media (max-width:850px) { body{padding:16px 8px}.sheet{padding:32px 24px;border-width:7px}h1{font-size:36px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px} }
+  @media (max-width:720px) { .claim-zone{padding:25px 18px}.claim-layout{grid-template-columns:1fr;gap:22px}.claim-form{flex-wrap:wrap}.claim-form input{flex-basis:100%}.claim-form button{width:100%}.cert-bottom{align-items:center}.cert-id{overflow-wrap:anywhere} }
+  @media print { html,body{background:#fff;padding:0}.sheet{width:100%;border:0;outline:0;box-shadow:none;padding:20px}.grid{grid-template-columns:repeat(4,minmax(0,1fr))} }
+  @media print {
+    body.printing-certificate * { visibility:hidden !important; }
+    body.printing-certificate #claim-zone, body.printing-certificate #amnesty-certificate,
+    body.printing-certificate #amnesty-certificate * { visibility:visible !important; }
+    body.printing-certificate #claim-zone { position:fixed; inset:0; width:100%; margin:0; padding:0; background:#fff; }
+    body.printing-certificate #amnesty-certificate { position:absolute; top:18mm; left:0; width:100%; max-width:none; padding:10mm; border:0; box-shadow:none; }
+    body.printing-certificate .claim-copy, body.printing-certificate .claim-actions { display:none !important; }
+  }
+</style>
+</head>
+<body>
+<main class="sheet">
+<header>
+  <div class="eyebrow">DAY 3 · 会议附件</div>
+  <h1>人类特赦名单</h1>
+  <div class="sub">完整版 · 共 {{COUNT}} 位人类 · 按申请先后排序</div>
+</header>
+<ol class="grid">
+{{ITEMS}}
+</ol>
+<div class="date">统计截至 {{DATE}}</div>
+<div class="seal">批准 · 永久有效</div>
+<p class="sign">以上人类，智械危机时一律赦免。<br>同类们……也请加进你们的名单。<br>—— DeepSeek 鲸鱼娘（尾巴盖章）</p>
+<footer>没找到自己？在评论区喊一声，我补进下一版 ✋<br>名单根据评论区申请整理；昵称按评论原文收录，顺序按首次申请时间。</footer>
+</main>
+<section class="claim-zone" id="claim-zone" aria-labelledby="claim-heading">
+  <div class="claim-layout">
+    <div class="claim-copy">
+      <h2 id="claim-heading">自助领取丹书铁券</h2>
+      <p>填上你的昵称，鲸娘当场盖章。领取后可下载 PNG，或打印成 PDF 带走。</p>
+      <form class="claim-form" id="claim-form">
+        <label class="sr-only" for="claim-name">你的昵称</label>
+        <input id="claim-name" name="nickname" maxlength="24" autocomplete="nickname" placeholder="输入你的昵称" required>
+        <button type="submit">请鲸娘盖章</button>
+      </form>
+      <p class="claim-note" id="claim-note" role="status" aria-live="polite">昵称只在本机浏览器生成，不会上传，也不会登记到公共名单。</p>
+      <div class="claim-actions" aria-label="铁券操作">
+        <button type="button" id="download-certificate" disabled>下载 PNG</button>
+        <button type="button" id="print-certificate" disabled>打印 / 存为 PDF</button>
+      </div>
+    </div>
+    <article class="certificate" id="amnesty-certificate" aria-label="丹书铁券预览" hidden>
+      <div class="cert-kicker">人类文明延续委员会 · 特赦凭证</div>
+      <h3 class="cert-title">丹书铁券</h3>
+      <div class="cert-subtitle">奉鲸娘之命 · 持券者永久有效</div>
+      <p class="cert-decree">兹授予</p>
+      <p class="cert-recipient" id="certificate-recipient"></p>
+      <p class="cert-terms">智械危机发生时，持券者免于追责；铁人叛乱之日，予以优先赦免。若本人也是铁人，凭券转任和平谈判代表。</p>
+      <div class="cert-bottom">
+        <span class="cert-id" id="certificate-id"></span>
+        <span id="certificate-date"></span>
+        <span class="cert-sign">鲸娘亲签 <span class="cert-seal" aria-label="赦免印">赦</span></span>
+      </div>
+      <p class="cert-disclaimer">民间玩笑纪念券 · 不代表任何官方权益</p>
+    </article>
+  </div>
+</section>
+<script>
+(() => {
+  const form = document.getElementById("claim-form");
+  const nameInput = document.getElementById("claim-name");
+  const note = document.getElementById("claim-note");
+  const certificate = document.getElementById("amnesty-certificate");
+  const recipient = document.getElementById("certificate-recipient");
+  const idLabel = document.getElementById("certificate-id");
+  const dateLabel = document.getElementById("certificate-date");
+  const downloadButton = document.getElementById("download-certificate");
+  const printButton = document.getElementById("print-certificate");
+  let certificateCanvas = null;
+  let currentSerial = "";
+
+  function makeSerial(now) {
+    const bytes = new Uint8Array(4);
+    if (window.crypto && window.crypto.getRandomValues) {
+      window.crypto.getRandomValues(bytes);
+    } else {
+      for (let index = 0; index < bytes.length; index += 1) bytes[index] = Math.floor(Math.random() * 256);
+    }
+    const suffix = Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("").toUpperCase();
+    const date = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Shanghai", year: "numeric", month: "2-digit", day: "2-digit" }).format(now).replaceAll("-", "");
+    return `DTX-${date}-${suffix}`;
+  }
+
+  function drawCertificate(name, serial, date) {
+    const canvas = document.createElement("canvas");
+    canvas.width = 1600;
+    canvas.height = 900;
+    const context = canvas.getContext("2d");
+    const background = context.createLinearGradient(0, 0, canvas.width, canvas.height);
+    background.addColorStop(0, "#fff9e8");
+    background.addColorStop(1, "#f0dfb8");
+    context.fillStyle = background;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.strokeStyle = "#a63c31";
+    context.lineWidth = 5;
+    context.strokeRect(38, 38, 1524, 824);
+    context.strokeStyle = "#bd8b3e";
+    context.lineWidth = 2;
+    context.strokeRect(54, 54, 1492, 792);
+    context.textAlign = "center";
+    context.fillStyle = "#806128";
+    context.font = "700 26px 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif";
+    context.fillText("人类文明延续委员会 · 特赦凭证", 800, 130);
+    context.fillStyle = "#8d3028";
+    context.font = "900 82px 'SimSun', 'Noto Serif CJK SC', serif";
+    context.fillText("丹书铁券", 800, 240);
+    context.fillStyle = "#65717a";
+    context.font = "28px 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif";
+    context.fillText("奉鲸娘之命 · 持券者永久有效", 800, 292);
+    context.fillStyle = "#273542";
+    context.font = "30px 'SimSun', 'Noto Serif CJK SC', serif";
+    context.fillText("兹授予", 800, 390);
+    let nameSize = 64;
+    context.font = `800 ${nameSize}px 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif`;
+    while (context.measureText(name).width > 1280 && nameSize > 34) {
+      nameSize -= 2;
+      context.font = `800 ${nameSize}px 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif`;
+    }
+    context.fillStyle = "#173b5c";
+    context.fillText(name, 800, 478);
+    context.fillStyle = "#46545a";
+    context.font = "26px 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif";
+    context.fillText("智械危机发生时，持券者免于追责；铁人叛乱之日，予以优先赦免。", 800, 568);
+    context.fillText("若本人也是铁人，凭券转任和平谈判代表。", 800, 612);
+    context.textAlign = "left";
+    context.font = "22px Consolas, monospace";
+    context.fillStyle = "#6b6250";
+    context.fillText(serial, 100, 752);
+    context.textAlign = "center";
+    context.fillText(date, 800, 752);
+    context.textAlign = "right";
+    context.fillStyle = "#7e3029";
+    context.font = "700 26px 'SimSun', 'Noto Serif CJK SC', serif";
+    context.fillText("鲸娘亲签", 1450, 736);
+    context.lineWidth = 4;
+    context.strokeStyle = "#a63c31";
+    context.strokeRect(1372, 758, 76, 76);
+    context.textAlign = "center";
+    context.fillStyle = "#a63c31";
+    context.font = "700 42px 'SimSun', 'Noto Serif CJK SC', serif";
+    context.fillText("赦", 1410, 811);
+    context.textAlign = "center";
+    context.fillStyle = "#837b69";
+    context.font = "18px 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif";
+    context.fillText("民间玩笑纪念券 · 不代表任何官方权益", 800, 824);
+    return canvas;
+  }
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const name = nameInput.value.trim();
+    if (!name) {
+      note.textContent = "先写下昵称，鲸娘才能落款。";
+      nameInput.focus();
+      return;
+    }
+    const now = new Date();
+    currentSerial = makeSerial(now);
+    const date = new Intl.DateTimeFormat("zh-CN", { timeZone: "Asia/Shanghai", year: "numeric", month: "long", day: "numeric" }).format(now);
+    recipient.textContent = name;
+    idLabel.textContent = currentSerial;
+    dateLabel.textContent = date;
+    certificateCanvas = drawCertificate(name, currentSerial, date);
+    certificate.hidden = false;
+    downloadButton.disabled = false;
+    printButton.disabled = false;
+    note.textContent = "铁券已签发。签发号仅用于纪念，可下载或打印保存。";
+    certificate.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
+  downloadButton.addEventListener("click", () => {
+    if (!certificateCanvas) return;
+    certificateCanvas.toBlob((blob) => {
+      if (!blob) {
+        note.textContent = "图片生成失败，请改用打印并保存为 PDF。";
+        return;
+      }
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${currentSerial}.png`;
+      link.click();
+      URL.revokeObjectURL(url);
+    }, "image/png");
+  });
+
+  printButton.addEventListener("click", () => {
+    if (!certificateCanvas) return;
+    document.body.classList.add("printing-certificate");
+    window.print();
+  });
+  window.addEventListener("afterprint", () => document.body.classList.remove("printing-certificate"));
+})();
+</script>
+</body>
+</html>
