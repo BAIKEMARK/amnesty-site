@@ -10,17 +10,17 @@
 
 ```
 dist/
-├── index.html          门户页（2 KB，纯 CSS）
 ├── 404.html            自定义 404
 ├── _headers            Cloudflare Pages 的缓存与安全头
-└── amnesty/            赦免名单子站
+├── _redirects          根路径 301 → /amnesty/
+└── amnesty/            赦免名单
     ├── index.html      首页
     ├── archive.html    完整名册
     ├── data.js         名册数据（约 6 MB，独立文件，强制回源验证）
     └── status.json     上一次抓取的结果、耗时、被平台分页截断的内容
 ```
 
-站点让出根路径，`/amnesty/` 只是第一个子站，以后加别的页面直接放 `dist/<名字>/` 即可，不用动已有链接。
+**根路径不放页面**，直接 301 进 `/amnesty/`（`_redirects` 里两行）。想加回门户时，删掉那两行、把 `index.html` 放回 `dist/` 即可，子站路径不用动。
 
 ### 部署
 
