@@ -99,6 +99,7 @@ jobs:
           wrangler pages deploy "amnesty-site/site/dist" \
             --project-name=whalegirl \
             --branch=main \
+            --commit-dirty=true \
             --commit-hash="${{ github.sha }}" \
             --commit-message="Refresh amnesty roster data"
       - name: 失败时让任务标红
