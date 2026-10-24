@@ -6,7 +6,7 @@
 
 ## 站点
 
-产物是 `amnesty-site/赦免网站/dist`，由 GitHub Actions 重新生成后提交进仓库，托管平台只需发布这个目录、**不需要构建命令**。
+产物是 `amnesty-site/site/dist`，由 GitHub Actions 重新生成后提交进仓库，托管平台只需发布这个目录、**不需要构建命令**。
 
 ```
 dist/
@@ -49,9 +49,9 @@ B 站公开评论 / 私信
         ③ intent   命中「申请 / 我也要 / 算我一个 / 我我我」+ 第一人称 → 进灰区
         ④ scope    该内容下不足 3 条明确申请 → 不认定为名单帖
         ⑤ Jev      灰区交 TypeSafe Jev 批量判定，noul ≥ 0.55 收录
-   ↓ merge        amnesty-site/赦免网站/import_comments.py   按 UID 合并，编号稳定
+   ↓ merge        amnesty-site/site/import_comments.py   按 UID 合并，编号稳定
    ↓ avatars      amnesty-site/fetch_avatars.py              只取 B 站 CDN 外链，不下载图片
-   ↓ build        amnesty-site/赦免网站/build.py             打包 dist
+   ↓ build        amnesty-site/site/build.py             打包 dist
 ```
 
 口径全部写在 `amnesty-site/keywords.json`，改判定规则不用动代码。
@@ -95,4 +95,4 @@ python amnesty-site/refresh.py --source 某个评论.csv    # 离线导入已有
 - **楼中楼深分页**：B 站 `/x/v2/reply/reply` 在 `pn≈250` 之后返回 `-400 max offset exceeded`，单栋热楼约 5000 条回复封顶。根评论没有这个限制（实测可翻 13,817 条）。撞上限时不会失败，只记进 `status.json` 的 `truncatedContents`。
 - **头像**：只存 B 站 CDN 外链，不下载。批量接口 `account/v1/user/cards` 一次最多 50 个 UID，且必须带 SESSDATA。
 - **判定**：规则层是「宁可多收」的口径，模板请愿句式、同音错字（特摄→特赦）都会直接放行，会有少量无关内容混入。
-- 被 Jev 拒掉的条目落盘在 `amnesty-site/赦免网站/rejected.json`，调判据时读这个文件重判即可，不必重抓。
+- 被 Jev 拒掉的条目落盘在 `amnesty-site/site/rejected.json`，调判据时读这个文件重判即可，不必重抓。

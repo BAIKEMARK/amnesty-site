@@ -8,7 +8,7 @@
     python amnesty-site/refresh.py --source 某评论.csv     # 离线：导入已有 CSV
     python amnesty-site/refresh.py --fetch --dry-run       # 只报告会新增多少人，不写任何文件
 
-水位与语境写在 赦免网站/crawl-state.json：水位只按根评论的时间推进，且只在
+水位与语境写在 site/crawl-state.json：水位只按根评论的时间推进，且只在
 data.json 落盘成功之后才前进，所以中途失败下一轮会重抓同一段（靠 merge 去重），
 不会漏也不会重复。失败时保留上一次的数据，只把 status.json 的 result 写成
 failed，站点不会空白。
@@ -24,7 +24,7 @@ from typing import Any, Iterable
 
 SITE_DIR = Path(__file__).resolve().parent
 REPO_DIR = SITE_DIR.parent
-SITE = SITE_DIR / "赦免网站"
+SITE = SITE_DIR / "site"
 sys.path.insert(0, str(REPO_DIR))
 sys.path.insert(0, str(SITE))
 sys.path.insert(0, str(SITE_DIR))

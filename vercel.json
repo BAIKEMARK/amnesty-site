@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "outputDirectory": "amnesty-site/赦免网站/dist",
+  "outputDirectory": "amnesty-site/site/dist",
   "cleanUrls": true,
   "trailingSlash": false,
   "headers": [

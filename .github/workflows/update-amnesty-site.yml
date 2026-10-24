@@ -68,8 +68,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # 首次运行前 crawl-state.json 还不存在，逐个判断，避免 pathspec 报错
           for name in data.json status.json crawl-state.json avatars.json dist; do
-            if [ -e "amnesty-site/赦免网站/$name" ]; then
-              git add "amnesty-site/赦免网站/$name"
+            if [ -e "amnesty-site/site/$name" ]; then
+              git add "amnesty-site/site/$name"
             fi
           done
           if git diff --cached --quiet; then
@@ -90,7 +90,7 @@ jobs:
             exit 0
           fi
           npx --yes wrangler@4 pages project create whalegirl --production-branch=main 2>/dev/null || true
-          npx --yes wrangler@4 pages deploy "amnesty-site/赦免网站/dist" \
+          npx --yes wrangler@4 pages deploy "amnesty-site/site/dist" \
             --project-name=whalegirl \
             --branch=main \
             --commit-hash="${{ github.sha }}" \
