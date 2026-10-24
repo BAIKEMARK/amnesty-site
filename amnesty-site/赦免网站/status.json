@@ -1,0 +1,26 @@
+{
+  "result": "ok",
+  "people": 13036,
+  "comments": 14435,
+  "addedPeople": 12487,
+  "addedComments": 13856,
+  "excluded": 0,
+  "source": "fetch",
+  "keywords": [
+    "赦免"
+  ],
+  "durationSeconds": 4521.0,
+  "checkedAt": "2026-10-24T16:24:33+08:00",
+  "updatedAt": "2026-10-24T16:24:33+08:00",
+  "lastError": "",
+  "truncatedContents": [
+    {
+      "channel": "视频",
+      "oid": "117466583798250",
+      "got": 36346,
+      "declared": 37356,
+      "reason": "max offset exceeded"
+    }
+  ],
+  "truncatedMissing": 0
+}

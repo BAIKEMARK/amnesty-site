@@ -1,0 +1,81 @@
+name: Refresh amnesty site
+
+on:
+  workflow_dispatch:
+    inputs:
+      full:
+        description: 强制全量重抓（约 70 分钟；平时都是增量）
+        type: boolean
+        default: false
+  schedule:
+    # 增量：每 2 小时，翻到上次水位就停
+    - cron: "23 */2 * * *"
+    # 全量对账：每周日 03:17 UTC，补增量扫不到的角落（见 README）
+    - cron: "17 3 * * 0"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-amnesty-site
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    env:
+      # 规范名优先，旧名兜底，便于 Secret 迁移期两个名字都能用。
+      BILI_AGENT_BILI_SESSDATA: ${{ secrets.BILI_AGENT_BILI_SESSDATA || secrets.BILI_SESSDATA }}
+      BILI_AGENT_BILI_JCT: ${{ secrets.BILI_AGENT_BILI_JCT || secrets.BILI_JCT }}
+      BILI_AGENT_BILI_USER_ID: ${{ secrets.BILI_AGENT_BILI_USER_ID || secrets.BILI_USER_ID }}
+      # 可选：Jev 批量判灰区（System One）；没配会自动退回纯规则（灰区全部放行）
+      TYPESAFE_API_KEYS: ${{ secrets.TYPESAFE_API_KEYS || secrets.TYPESAFE_API_KEY }}
+      # 可选：OpenAI 兼容模型兜底
+      BILI_AGENT_LLM_API_KEY: ${{ secrets.BILI_AGENT_LLM_API_KEY || secrets.BILI_AGENT_API_KEY }}
+      BILI_AGENT_BASE_URL: ${{ secrets.BILI_AGENT_BASE_URL }}
+      BILI_AGENT_CHAT_MODEL: ${{ secrets.BILI_AGENT_CHAT_MODEL }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 安装抓取依赖
+        run: python -m pip install "requests>=2.28" "openai>=1.0" "pypinyin>=0.50"
+      - name: 决定本轮口径
+        id: mode
+        run: |
+          if [ "${{ github.event.schedule }}" = "17 3 * * 0" ] || [ "${{ inputs.full }}" = "true" ]; then
+            echo "flag=--full" >> "$GITHUB_OUTPUT"
+            echo "本轮：全量对账"
+          else
+            echo "flag=" >> "$GITHUB_OUTPUT"
+            echo "本轮：增量"
+          fi
+      - name: 抓评论与私信、合并名册、重新打包
+        id: refresh
+        continue-on-error: true
+        run: python amnesty-site/refresh.py --fetch --judge jev ${{ steps.mode.outputs.flag }}
+      - name: 提交数据与构建产物
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # 首次运行前 crawl-state.json 还不存在，逐个判断，避免 pathspec 报错
+          for name in data.json status.json crawl-state.json avatars.json dist; do
+            if [ -e "amnesty-site/赦免网站/$name" ]; then
+              git add "amnesty-site/赦免网站/$name"
+            fi
+          done
+          if git diff --cached --quiet; then
+            echo "数据没有变化，跳过提交。"
+          else
+            git commit -m "Refresh amnesty roster data"
+            git push
+          fi
+      - name: 失败时让任务标红
+        if: steps.refresh.outcome == 'failure'
+        run: |
+          echo "::error::本次抓取失败，站点仍使用上一次成功的数据。请看 status.json 的 lastError。"
+          exit 1

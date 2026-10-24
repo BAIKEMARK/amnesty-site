@@ -1,0 +1,14 @@
+# 本地凭证（CI 用 GitHub Secrets 注入，绝不入库）
+config.json
+.jevkey
+data/
+*.log
+
+# Python 缓存
+__pycache__/
+*.pyc
+.venv/
+
+# 打包副产物（单文件版只在本机用，不入库）
+**/dist-standalone/
+*.bak

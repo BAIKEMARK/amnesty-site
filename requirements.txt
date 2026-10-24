@@ -1,0 +1,8 @@
+requests>=2.28
+openai>=1.0
+# 评论判定用：把「特摄/涉免」这类同音错字还原成「特赦/赦免」。缺了也能跑，只走内置错字表。
+pypinyin>=0.50
+# websockets is only needed to run the QQ gateway; checks and self-tests can run without it.
+websockets>=13
+# Windows Python distributions may not include the IANA timezone database.
+tzdata>=2024.1; sys_platform == "win32"
