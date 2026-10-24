@@ -319,7 +319,9 @@ def main(argv: list[str] | None = None) -> int:
             print(f"[头像] 本轮跳过：{type(exc).__name__}: {exc}")
 
     builder = load_builder(site)
-    builder.build(standalone=False, out=site / "dist")
+    # 站点挂在 /amnesty/ 子路径下，根目录留给门户页（以后加别的子站）。
+    builder.build(standalone=False, out=site / "dist", subdir="amnesty")
+    builder.write_portal(site / "dist")
     if args.standalone:
         builder.build(standalone=True, out=site / "dist-standalone")
     write_status(
