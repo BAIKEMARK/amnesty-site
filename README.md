@@ -24,7 +24,7 @@ dist/
 
 ### 部署
 
-主站在 **Cloudflare Pages**，用 Direct Upload 直传 `dist`，不经过 Cloudflare 的构建环境（仓库路径含中文，交给它构建容易解析出错；直传也省掉拉代码装依赖的时间）。
+主站在 **Cloudflare Pages**，用 Direct Upload 直传 `dist`，不经过 Cloudflare 的构建环境。产物本来就由 Actions 生成好并提交进仓库，再让 CF 拉一遍代码、跑一遍空构建是多余的；直传把部署压到 10 秒左右，失败也不影响线上那一版。
 
 | 项 | 值 |
 |---|---|
