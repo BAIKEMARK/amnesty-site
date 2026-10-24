@@ -291,16 +291,21 @@ def main(argv: list[str] | None = None) -> int:
         write_comments(args.csv_out, matched)
 
     if not args.no_avatars:
+        from config import Settings
         from fetch_avatars import sync_avatars
 
-        # 只取外链 URL，不下载图片；批量接口一次 50 个 UID，需要登录态才能用。
-        _, failures = sync_avatars(
-            data["people"],
-            cache_path=site / "avatars.json",
-            sessdata=Settings.load().bili_sessdata,
-        )
-        if failures:
-            print(f"头像补全有 {failures} 个失败，下次会重试")
+        # 头像只是外观，任何失败都不该拦住数据落盘与重新打包。
+        try:
+            # 只取外链 URL，不下载图片；批量接口一次 50 个 UID，需要登录态才能用。
+            _, failures = sync_avatars(
+                data["people"],
+                cache_path=site / "avatars.json",
+                sessdata=Settings.load().bili_sessdata,
+            )
+            if failures:
+                print(f"头像补全有 {failures} 个失败，下次会重试")
+        except Exception as exc:  # noqa: BLE001
+            print(f"[头像] 本轮跳过：{type(exc).__name__}: {exc}")
 
     builder = load_builder(site)
     builder.build(standalone=False, out=site / "dist")
