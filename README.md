@@ -30,7 +30,7 @@ dist/
 |---|---|
 | 项目名 | `whalegirl` → `whalegirl.pages.dev` |
 | 部署触发 | `update-amnesty-site.yml` 最后一个步骤跑 `wrangler pages deploy` |
-| 自定义域名 | `whalegirl.marbai.com`，CNAME 指向 `whalegirl.pages.dev` |
+| 自定义域名 | `whalegirl.markbai.com`，CNAME 指向 `whalegirl.pages.dev` |
 
 免费额度：带宽与请求**不限**，只有「每月 500 次部署 + 500 次构建」的限制。现在每 2 小时一轮约 360 次/月，余量够用；如果以后改成 1 小时一轮就会超。
 

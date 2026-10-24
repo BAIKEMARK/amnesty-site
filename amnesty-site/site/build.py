@@ -143,7 +143,7 @@ def portal_html(sites: list[dict] | None = None) -> str:
         f"<style>{PORTAL_CSS}</style></head><body>"
         "<header><h1>鲸鱼娘</h1><p>一堆没什么用、但挺好玩的页面。</p></header>"
         f"<main>{cards}</main>"
-        "<footer>WHALEGIRL.MARBAI.COM</footer></body></html>"
+        "<footer>WHALEGIRL.MARKBAI.COM</footer></body></html>"
     )
 
 
