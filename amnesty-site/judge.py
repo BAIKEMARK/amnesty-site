@@ -380,6 +380,7 @@ def select(
     require_scope: bool = True,
     context_hint: str = "",
     extra_scope: Iterable[str] = (),
+    rejected: list[dict[str, Any]] | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, int]]:
     """返回（收录的评论行，统计）。收录行带 matched_by / why 字段。
 
@@ -449,6 +450,17 @@ def select(
                 stats["llm_yes" if mode == LLM else "jev_yes"] += 1
             else:
                 stats["llm_no" if mode == LLM else "jev_no"] += 1
+                if rejected is not None:
+                    rejected.append({
+                        "评论者UID": row.get("评论者UID") or "",
+                        "评论者昵称": row.get("评论者昵称") or "",
+                        "评论内容": row.get("评论内容") or "",
+                        "内容链接": row.get("内容链接") or "",
+                        "发表时间": row.get("发表时间") or "",
+                        "渠道": row.get("渠道") or "",
+                        "matched_by": row.get("matched_by") or "",
+                        "why": why,
+                    })
                 if verbose:
                     print(f"[判定] 排除 {row.get('评论者昵称')}：{row.get('评论内容')[:30]} → {why}")
     else:

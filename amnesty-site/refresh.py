@@ -151,6 +151,7 @@ def judge_rows(
     config_path: Path | None,
     *,
     extra_scope: Iterable[str] = (),
+    rejected_out: list[dict[str, Any]] | None = None,
 ) -> tuple[list[dict[str, Any]], set[str]]:
     """按选定口径筛出「在申请加入名单」的评论；同时返回确认过的名单内容键。"""
     if mode == "words":
@@ -170,7 +171,8 @@ def judge_rows(
     public = [row for row in rows if str(row.get("渠道") or "") != PRIVATE_CHANNEL]
     private = [row for row in rows if str(row.get("渠道") or "") == PRIVATE_CHANNEL]
 
-    accepted, stats = judge.select(public, config, mode=mode, model=model, extra_scope=extra_scope)
+    accepted, stats = judge.select(public, config, mode=mode, model=model,
+                                   extra_scope=extra_scope, rejected=rejected_out)
     scope, _ = judge.scope_of(public, config)
     known_scope = {str(key) for key in extra_scope if str(key)} | scope
 
@@ -179,6 +181,7 @@ def judge_rows(
             private, config, mode=mode, model=model,
             require_scope=False,
             context_hint="这是一条私信：发信人单独对 UP 主说，没有同帖语境。",
+            rejected=rejected_out,
         )
         accepted.extend(extra)
         stats.update({f"private_{key}": value for key, value in private_stats.items()})
@@ -259,9 +262,17 @@ def main(argv: list[str] | None = None) -> int:
             write_status(status_path, result="failed", lastError=message)
         return 1
 
+    rejected: list[dict[str, Any]] = []
     matched, scope = judge_rows(
-        rows, keywords, args.judge, args.keywords, extra_scope=known_scope
+        rows, keywords, args.judge, args.keywords, extra_scope=known_scope,
+        rejected_out=rejected,
     )
+    if rejected and not args.dry_run:
+        # 被拒明细落盘：调判据时直接读这份本地文件重判，不用重抓。
+        write_atomic(site / "rejected.json", json.dumps(
+            {"updatedAt": now().isoformat(timespec="seconds"), "rows": rejected},
+            ensure_ascii=False, indent=1) + "\n")
+        print(f"被拒 {len(rejected)} 条已写入 {site / 'rejected.json'}（可复核/重判）")
     data, stats = merge_rows(matched, load_data(data_path), excluded)
     print(
         f"命中评论 {len(matched)} 条；名单 {stats['people']} 人"
