@@ -63,6 +63,8 @@ jobs:
         run: python amnesty-site/refresh.py --fetch --judge jev ${{ steps.mode.outputs.flag }}
       - name: 提交数据与构建产物
         id: commit
+        env:
+          GIT_EDITOR: "true"
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -77,6 +79,8 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             git commit -m "Refresh amnesty roster data"
+            # 抓取的这几分钟里可能有人推了代码，直接 push 会被拒（non-fast-forward）
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
             git push
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
