@@ -1,17 +1,17 @@
 {
   "result": "ok",
-  "people": 14782,
-  "comments": 16607,
-  "addedPeople": 376,
-  "addedComments": 432,
+  "people": 14799,
+  "comments": 16636,
+  "addedPeople": 17,
+  "addedComments": 29,
   "excluded": 0,
   "source": "fetch",
   "keywords": [
     "赦免"
   ],
-  "durationSeconds": 617.4,
-  "checkedAt": "2026-10-25T12:59:42+08:00",
-  "updatedAt": "2026-10-25T12:59:42+08:00",
+  "durationSeconds": 513.7,
+  "checkedAt": "2026-10-25T13:08:45+08:00",
+  "updatedAt": "2026-10-25T13:08:45+08:00",
   "lastError": "",
   "truncatedContents": [
     {
@@ -24,8 +24,8 @@
   ],
   "truncatedMissing": 0,
   "incremental": true,
-  "commentRows": 11720,
-  "changedContents": 17,
-  "privateMessages": 63,
+  "commentRows": 10507,
+  "changedContents": 15,
+  "privateMessages": 70,
   "backfill": "手动补 4 人：模板请愿文（动态下）"
 }
