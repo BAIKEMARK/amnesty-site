@@ -1,31 +1,45 @@
 {
   "result": "ok",
-  "people": 14799,
-  "comments": 16636,
-  "addedPeople": 17,
-  "addedComments": 29,
+  "people": 15488,
+  "comments": 17585,
+  "addedPeople": 689,
+  "addedComments": 949,
   "excluded": 0,
   "source": "fetch",
   "keywords": [
     "赦免"
   ],
-  "durationSeconds": 513.7,
-  "checkedAt": "2026-10-25T13:08:45+08:00",
-  "updatedAt": "2026-10-25T13:08:45+08:00",
+  "durationSeconds": 3425.8,
+  "checkedAt": "2026-10-25T17:23:37+08:00",
+  "updatedAt": "2026-10-25T17:23:37+08:00",
   "lastError": "",
-  "truncatedContents": [
+  "truncatedContents": 2,
+  "truncatedMissing": 27482,
+  "incremental": true,
+  "commentRows": 85704,
+  "changedContents": 24,
+  "privateMessages": 56,
+  "backfill": "手动补 4 人：模板请愿文（动态下）",
+  "truncatedList": [
     {
+      "kind": "content",
+      "channel": "视频",
+      "oid": "117482572617216",
+      "got": 21716,
+      "declared": 46804,
+      "truncatedThreads": 1,
+      "reason": "max offset exceeded",
+      "url": "https://www.bilibili.com/video/BV1XJn26BEa7"
+    },
+    {
+      "kind": "content",
       "channel": "视频",
       "oid": "117466583798250",
-      "got": 36346,
-      "declared": 37356,
-      "reason": "max offset exceeded"
+      "got": 42214,
+      "declared": 44608,
+      "truncatedThreads": 1,
+      "reason": "max offset exceeded",
+      "url": "https://www.bilibili.com/video/BV1pGnn67EC2"
     }
-  ],
-  "truncatedMissing": 0,
-  "incremental": true,
-  "commentRows": 10507,
-  "changedContents": 15,
-  "privateMessages": 70,
-  "backfill": "手动补 4 人：模板请愿文（动态下）"
+  ]
 }
