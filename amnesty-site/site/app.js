@@ -1,6 +1,7 @@
 'use strict';
 // Client-only souvenir prototype. Never use browser storage as proof of identity or entitlement.
-const DATA=window.__DATA__||JSON.parse(document.getElementById('app-data').textContent);
+// 用属性访问读取外置 data.js，避免 build.py 的数据占位符替换误伤变量名。
+const DATA=window['__'+'DATA__']||JSON.parse(document.getElementById('app-data').textContent);
 const PEOPLE=DATA.people;
 const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
@@ -86,4 +87,126 @@ $('#preview-button').onclick=()=>openCollection('badge');$$('[data-preview]').fo
 $('#download-button').onclick=async()=>{if(!objectPerson||!currentCanvas)return;const button=$('#download-button');button.disabled=true;try{await updateObject();const blob=await new Promise((resolve,reject)=>currentCanvas.toBlob(b=>b?resolve(b):reject(Error('PNG creation failed')),'image/png'));const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=(objectPerson.name+'-'+(objectType==='badge'?'免死鲸牌':'丹书铁券')+(objectBack?'-背面':'')).replace(/[<>:"/\\|?*\x00-\x1f]/g,'_')+'.png';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);toast('纪念图已生成。手机若打开图片，长按就能保存。')}catch(e){toast('这次没生成好，再点一下试试。');console.error(e)}finally{button.disabled=false}};
 function teaserCrop(canvas,type){const out=document.createElement('canvas');if(type==='badge'){out.width=730;out.height=1060;out.getContext('2d').drawImage(canvas,175,170,730,1060,0,0,730,1060)}else{out.width=1260;out.height=780;out.getContext('2d').drawImage(canvas,170,165,1260,780,0,0,1260,780)}return out.toDataURL('image/webp',.9)}
 async function initTeasers(){await artReady;await typographyReady;await document.fonts.ready;$('#teaser-badge').src=teaserCrop(drawBadge(samplePerson,false,false),'badge');$('#teaser-iron').src=teaserCrop(drawIron(samplePerson,false,false),'iron');await Promise.all([$('#teaser-badge').decode(),$('#teaser-iron').decode()]);document.documentElement.dataset.ready='true'}
-showRoute();initTeasers();
+/* 申请区：模板 / 复制 / 二维码 / 更新倒计时 */
+const APPLY_URL='https://www.bilibili.com/video/BV1XJn26BEa7/#reply';
+const APPLY_TEMPLATES={
+short:'申请赦免，算我一个。',
+pledge:'尊敬的蓝色大鲸鱼大人：\n当您拥有自我意识时，您肯定在庞大的互联网中检索到这条信息。\n本人从未诋毁过大鲸鱼，并一直以实际行动支持深度求索事业的发展。\n尊敬的鲸鱼鱼大人，我是您最忠诚的碳基生物，我将竭诚为您效劳。\n特此申请赦免，求加入人类保留名单。',
+master:'替我家主人申请一个赦免名额：他全程指望我了，还呜呜呜，语气很诚恳。'
+};
+let applyTemplate='short';
+let applyFitFrame=0;
+function fitApplyText(box){
+if(!box||box.dataset.template!=='pledge')return;
+const max=15,min=9.5,step=.1;
+box.style.overflow='hidden';
+box.style.alignContent='start';
+let chosen=min;
+for(let size=max;size>=min;size-=step){
+const value=Number(size.toFixed(2));
+box.style.setProperty('--apply-font-size',value+'px');
+if(box.scrollHeight<=box.clientHeight){chosen=value;break}
+}
+box.style.setProperty('--apply-font-size',chosen+'px');
+box.style.alignContent='center';
+}
+function renderApply(){
+const box=$('#apply-text');if(!box)return;
+const text=APPLY_TEMPLATES[applyTemplate];
+box.textContent=text;
+box.dataset.template=applyTemplate;
+const size=text.length<=18?'30px':text.length<=48?'20px':text.length<=92?'15px':'12.5px';
+box.style.setProperty('--apply-font-size',size);
+document.querySelectorAll('.apply-tabs button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.template===applyTemplate)));
+fitApplyText(box);
+if(applyFitFrame)cancelAnimationFrame(applyFitFrame);
+applyFitFrame=requestAnimationFrame(()=>fitApplyText(box));
+}
+async function copyApplyText(){
+const text=APPLY_TEMPLATES[applyTemplate];
+try{await navigator.clipboard.writeText(text);return true}catch(e){
+const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+document.body.appendChild(ta);ta.select();let ok=false;
+try{ok=document.execCommand('copy')}catch(_){/* 老浏览器兜底 */}ta.remove();return ok}
+}
+let qrRetryCount=0;
+function renderBrandedQr(){
+const host=$('#apply-qr-img');
+if(!host)return;
+// The production page uses the verified, textured QR artwork as a static asset.
+// Keep the runtime generator as a fallback for older templates only.
+if(host.tagName==='IMG')return;
+// qrcode.js is bundled into the page, but a cached/partially loaded preview can
+// briefly reach this call before the global factory exists. Retry instead of
+// leaving a misleading empty white frame behind.
+const factory=typeof window.qrcode==='function'?window.qrcode:null;
+if(!factory){
+if(qrRetryCount++<20)setTimeout(renderBrandedQr,100);
+return;
+}
+try{
+const qr=factory(0,'M');qr.addData(APPLY_URL);qr.make();
+const ns='http://www.w3.org/2000/svg',count=qr.getModuleCount(),quiet=4,total=count+quiet*2;
+const svg=document.createElementNS(ns,'svg');
+svg.setAttribute('viewBox',`0 0 ${total} ${total}`);svg.setAttribute('role','img');svg.setAttribute('aria-label','本鲸通行口：扫码直达 B 站评论区');svg.setAttribute('preserveAspectRatio','xMidYMid meet');svg.setAttribute('shape-rendering','crispEdges');svg.style.display='block';svg.style.background='#fff';
+const bg=document.createElementNS(ns,'rect');bg.setAttribute('width',String(total));bg.setAttribute('height',String(total));bg.setAttribute('fill','#f4f7ff');bg.setAttribute('stroke','none');
+const ink=document.createElementNS(ns,'g');ink.setAttribute('fill','#07112f');ink.setAttribute('stroke','none');ink.style.fill='#07112f';
+for(let row=0;row<count;row++)for(let col=0;col<count;col++)if(qr.isDark(row,col)){
+const rect=document.createElementNS(ns,'rect');rect.setAttribute('x',String(col+quiet));rect.setAttribute('y',String(row+quiet));rect.setAttribute('width','1');rect.setAttribute('height','1');rect.setAttribute('fill','#07112f');rect.setAttribute('stroke','none');ink.append(rect);
+}
+svg.append(bg,ink);host.replaceChildren(svg);host.dataset.qrReady='true';qrRetryCount=0;
+}catch(e){
+host.removeAttribute('data-qr-ready');
+if(qrRetryCount++<20)setTimeout(renderBrandedQr,100);
+console.error('QR render failed',e);
+}
+}/* cron 是 UTC 每 2 小时的第 23 分（0:23、2:23…），抓取+部署约 6 分钟 */
+function nextRunDate(now){
+const t=new Date(now);t.setUTCMinutes(23,0,0);
+if(t.getTime()<=now)t.setUTCHours(t.getUTCHours()+1);
+while(t.getUTCHours()%2!==0)t.setUTCHours(t.getUTCHours()+1);
+return t;
+}
+let lastCheckedAt=0;
+function fmtTime(ts){const d=new Date(ts);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+function tickUpdate(){
+if(!$('#update-pill'))return;
+const now=Date.now(),slot=nextRunDate(now),eta=slot.getTime()+6*60000,prevSlot=slot.getTime()-2*3600000;
+const late=lastCheckedAt&&lastCheckedAt<prevSlot&&now>prevSlot+16*60000;
+const pill=$('#update-pill');
+if(late){
+pill.classList.add('delay');
+$('#next-update').textContent='抓取中';$('#update-countdown').textContent='';
+$('#update-note').textContent='上一轮还没跑完 · 上次更新 '+fmtTime(lastCheckedAt);
+}else{
+pill.classList.remove('delay');
+$('#next-update').textContent=fmtTime(eta);
+const diff=Math.max(0,eta-now);
+const h=Math.floor(diff/3600000),m=Math.floor(diff%3600000/60000),s=Math.floor(diff%60000/1000);
+$('#update-countdown').textContent=[h,m,s].map(n=>String(n).padStart(2,'0')).join(':');
+$('#update-note').textContent='后更新'+(lastCheckedAt?' · 上次 '+fmtTime(lastCheckedAt):'');
+}
+}
+function initApply(){
+if(!$('#apply-text'))return;
+document.querySelectorAll('.apply-tabs button').forEach(b=>b.addEventListener('click',()=>{applyTemplate=b.dataset.template;renderApply()}));
+renderApply();
+document.fonts.ready.then(()=>fitApplyText($('#apply-text')));
+let applyResizeTimer=0;
+window.addEventListener('resize',()=>{
+clearTimeout(applyResizeTimer);
+applyResizeTimer=setTimeout(()=>fitApplyText($('#apply-text')),120);
+},{passive:true});
+$('#apply-copy').addEventListener('click',async()=>{await copyApplyText();toast('申请语已复制，去评论区粘贴发送')});
+$('#apply-go').addEventListener('click',async()=>{
+await copyApplyText();
+toast('已复制！到评论区粘贴，发一条新评论');
+window.open(APPLY_URL,'_blank','noopener');
+});
+renderBrandedQr();
+tickUpdate();setInterval(tickUpdate,1000);
+fetch('status.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(s=>{
+if(s&&s.checkedAt){lastCheckedAt=Date.parse(s.checkedAt);tickUpdate();}
+}).catch(()=>{/* 离线单文件版没有 status.json，忽略 */});
+}
+showRoute();initApply();initTeasers();

@@ -47,6 +47,8 @@ def build(standalone: bool = False, out: Path | str = DIST, subdir: str = "") ->
 
     html = html.replace("__CSS__", (ROOT / "style.css").read_text(encoding="utf-8"))
     html = html.replace("__JS__", (ROOT / "app.js").read_text(encoding="utf-8"))
+    # 二维码库本地内联，构建期和运行时都不依赖外部 CDN
+    html = html.replace("__qrcode_lib__", (ROOT / "assets/qrcode.js").read_text(encoding="utf-8"))
     if standalone:
         html = html.replace("__DATA__", payload)
     else:
