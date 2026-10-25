@@ -49,6 +49,20 @@ def is_offset_limit(exc: BaseException) -> bool:
     return "max offset" in str(exc).lower()
 
 
+# 楼中楼接口对已删除/不存在的根评论返回 code=12006「没有该评论」。抓取途中
+# 评论被删是常态，重试多少次都不会变回来，不能当作抓取失败拖垮整轮。
+COMMENT_GONE_CODE = 12006
+
+
+def is_comment_gone(exc: BaseException) -> bool:
+    """根评论已删除/不存在：这栋楼没了，不是网络抖动。"""
+    if not isinstance(exc, BilibiliApiError):
+        return False
+    if exc.code is not None and int(exc.code) == COMMENT_GONE_CODE:
+        return True
+    return f"code={COMMENT_GONE_CODE}" in str(exc)
+
+
 class BilibiliClient:
     API = "https://api.bilibili.com"
     SESSIONS_URL = "https://api.vc.bilibili.com/session_svr/v1/session_svr/get_sessions"
@@ -256,6 +270,10 @@ class BilibiliClient:
                     params={"oid": oid, "type": comment_type, "root": root_id, "pn": page_number, "ps": 20},
                 ).get("data") or {}
             except BilibiliApiError as exc:
+                if is_comment_gone(exc):
+                    # 根评论在抓取途中被删（或已不可见），这栋楼连同回复已经不在了：
+                    # 已拿到的就是全部，跳过它，不要拖垮整轮抓取。
+                    return collected
                 if not is_offset_limit(exc):
                     raise BilibiliError(f"楼中楼 {root_id} 第 {page_number} 页抓取失败：{exc}") from exc
                 # 这栋楼的回复超过平台分页上限，已拿到的就是接口愿意给的全部。
