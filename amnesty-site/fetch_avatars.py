@@ -73,6 +73,70 @@ def _fetch_batch(uids: list[str], sessdata: str) -> dict[str, str]:
     return got
 
 
+def _fetch_batch_names(uids: list[str], sessdata: str) -> dict[str, str]:
+    """Return public display names from the same authenticated card batch API."""
+    request = urllib.request.Request(BATCH_URL + ",".join(uids), headers=_headers(sessdata))
+    payload = json.loads(urllib.request.urlopen(request, timeout=20).read())
+    if payload.get("code") != 0:
+        raise RuntimeError(f"code={payload.get('code')} {payload.get('message', '')}")
+    got = {
+        str(card.get("mid")): str(card.get("name") or "").strip()
+        for card in payload.get("data") or []
+        if str(card.get("mid") or "") and str(card.get("name") or "").strip()
+    }
+    if not got:
+        raise RuntimeError("批量用户卡片没有返回昵称")
+    return got
+
+
+def _fetch_one_name(uid: str, sessdata: str) -> str | None:
+    """Single-card fallback, including accounts omitted by the batch endpoint."""
+    request = urllib.request.Request(
+        f"https://api.bilibili.com/x/web-interface/card?mid={uid}", headers=_headers(sessdata)
+    )
+    payload = json.loads(urllib.request.urlopen(request, timeout=10).read())
+    if payload.get("code") != 0:
+        return None
+    card = (payload.get("data") or {}).get("card") or {}
+    return str(card.get("name") or "").strip() or None
+
+
+def fetch_profile_names(
+    uids: Iterable[str], sessdata: str = "", *, verbose: bool = True,
+) -> tuple[dict[str, str], int]:
+    """Resolve Bilibili display names for a UID list, with per-user fallbacks."""
+    normalized = list(dict.fromkeys(
+        str(uid).strip() for uid in uids if str(uid or "").strip().isdigit()
+    ))
+    names: dict[str, str] = {}
+    failures = 0
+    for start in range(0, len(normalized), BATCH_SIZE):
+        chunk = normalized[start:start + BATCH_SIZE]
+        if sessdata:
+            try:
+                names.update(_fetch_batch_names(chunk, sessdata))
+            except Exception as exc:  # noqa: BLE001 - name enrichment must not stop roster refresh
+                if verbose:
+                    print(f"昵称批量查询 {start + 1}-{start + len(chunk)} 失败：{type(exc).__name__}: {exc}")
+        missing = [uid for uid in chunk if uid not in names]
+        for index, uid in enumerate(missing):
+            try:
+                name = _fetch_one_name(uid, sessdata)
+            except Exception as exc:  # noqa: BLE001 - preserve placeholders on transient API errors
+                name = None
+                if verbose:
+                    print(f"昵称查询失败 {uid}：{type(exc).__name__}: {exc}")
+            if name:
+                names[uid] = name
+            else:
+                failures += 1
+            if index + 1 < len(missing):
+                time.sleep(0.4)
+        if start + BATCH_SIZE < len(normalized):
+            time.sleep(BATCH_INTERVAL)
+    return names, failures
+
+
 def _fetch_one(uid: str, sessdata: str) -> tuple[str | None, int | None]:
     """Single-card fallback for UIDs the batch endpoint skips (closed/silent accounts)."""
     request = urllib.request.Request(

@@ -3,7 +3,7 @@
 @font-face{font-family:WhaleDecree;src:url(__font_decree__) format('woff');font-weight:400;font-display:block}
 :root{--ink:#070b2a;--ink2:#0d1440;--ink3:#17206a;--cyan:#3fe0ff;--blue:#2d5bff;--pink:#ff4fa3;--yellow:#ffd23f;--red:#e2302a;--white:#f4f7ff;--mute:#a9b4e0;--line:rgba(140,170,255,.18);--font:"PingFang SC","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC",system-ui,sans-serif;--mono:"JetBrains Mono",Consolas,"SFMono-Regular",monospace;--r:18px}
 *{box-sizing:border-box}[hidden]{display:none!important}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);color:var(--white);font-family:var(--font);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-img{max-width:100%;display:block}button,input,select{font:inherit;color:inherit}button{cursor:pointer}a{color:inherit}
+img{max-width:100%;display:block;user-select:none;-webkit-user-drag:none;user-drag:none}button,input,select{font:inherit;color:inherit}button{cursor:pointer}a{color:inherit}
 .symbols{position:absolute;width:0;height:0}svg{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .skip{position:absolute;left:-999px;top:8px;z-index:99;background:var(--cyan);color:var(--ink);padding:8px 14px;border-radius:8px}.skip:focus{left:8px}

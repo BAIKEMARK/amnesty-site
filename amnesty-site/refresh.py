@@ -32,7 +32,7 @@ sys.path.insert(0, str(SITE_DIR))
 import judge  # noqa: E402
 from comment_batch import filter_comments, normalize_keywords  # noqa: E402
 from comment_csv import read_reviewed, write_comments  # noqa: E402
-from import_comments import load_data, merge_rows, output_payload  # noqa: E402
+from import_comments import is_placeholder_name, load_data, merge_rows, output_payload  # noqa: E402
 
 DATA_PATH = SITE / "data.json"
 EXCLUDE_PATH = SITE / "exclude.json"
@@ -282,6 +282,28 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.dry_run:
         return 0
+
+    # 私信会话列表偶尔不给 account_info.name，但 B 站个人卡片 API 可按 UID 补回。
+    # 同时修复以前已经入库的占位昵称；查询失败时保留旧值，不影响本轮名单发布。
+    placeholders = [person for person in data["people"] if is_placeholder_name(person.get("name"))]
+    if placeholders:
+        try:
+            from config import Settings
+            from fetch_avatars import fetch_profile_names
+
+            names, failures = fetch_profile_names(
+                (person["id"] for person in placeholders),
+                sessdata=Settings.load().bili_sessdata,
+            )
+            corrected = 0
+            for person in placeholders:
+                name = names.get(str(person["id"]), "").strip()
+                if name and not is_placeholder_name(name):
+                    person["name"] = name
+                    corrected += 1
+            print(f"[昵称] 占位昵称 {len(placeholders)} 个，补全 {corrected} 个，失败 {failures} 个")
+        except Exception as exc:  # noqa: BLE001 - name lookup must not stop roster refresh
+            print(f"[昵称] 补全跳过：{type(exc).__name__}: {exc}")
 
     data["version"] = started.strftime("%Y-%m-%d")
     write_atomic(data_path, json.dumps(output_payload(data), ensure_ascii=False, separators=(",", ":")))

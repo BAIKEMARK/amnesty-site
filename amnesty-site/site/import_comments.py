@@ -19,6 +19,12 @@ ROOT = Path(__file__).parent
 DATA_PATH = ROOT / "data.json"
 REQUIRED = {"评论者UID", "评论者昵称", "评论内容", "发表时间", "内容链接", "渠道"}
 SOURCE_NOTE = "B 站公开评论与私信；按 UID 合并，规则 + 模型判定"
+PLACEHOLDER_NAMES = {"私信用户", "B站用户", "未署名人类"}
+
+
+def is_placeholder_name(value: Any) -> bool:
+    name = str(value or "").strip()
+    return name in PLACEHOLDER_NAMES or name.startswith("UID ")
 
 
 def load_data(path: Path | str = DATA_PATH) -> dict[str, Any]:
@@ -62,14 +68,20 @@ def merge_rows(
             continue
         if uid not in people:
             highest += 1
+            name = str(row.get("评论者昵称") or "").strip() or "未署名人类"
             people[uid] = {
                 "id": uid,
-                "name": str(row.get("评论者昵称") or "").strip() or "未署名人类",
+                "name": name,
                 "no": highest,
                 "comments": [],
             }
             seen[uid] = set()
             added_people += 1
+        else:
+            incoming_name = str(row.get("评论者昵称") or "").strip()
+            current_name = str(people[uid].get("name") or "").strip()
+            if incoming_name and is_placeholder_name(current_name) and not is_placeholder_name(incoming_name):
+                people[uid]["name"] = incoming_name
         comment = {
             "text": str(row.get("评论内容") or "").strip(),
             "date": row.get("发表时间") or "",
