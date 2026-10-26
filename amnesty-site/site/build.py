@@ -43,7 +43,11 @@ def build(standalone: bool = False, out: Path | str = DIST, subdir: str = "") ->
     out = Path(out)
     target = out / subdir if subdir else out
     html = (ROOT / "template.html").read_text(encoding="utf-8")
-    payload = json.dumps(load_people(), ensure_ascii=False).replace("<", "\\u003c")
+    data = load_people()
+    payload = json.dumps(data, ensure_ascii=False).replace("<", "\\u003c")
+    # 首屏统计值和外置 data.js 使用同一份数据，避免浏览器先闪出过期的旧人数。
+    html = html.replace("__peoplecount__", f"{len(data['people']):,}")
+    html = html.replace("__commentcount__", f"{data['commentCount']:,}")
 
     html = html.replace("__CSS__", (ROOT / "style.css").read_text(encoding="utf-8"))
     html = html.replace("__JS__", (ROOT / "app.js").read_text(encoding="utf-8"))
