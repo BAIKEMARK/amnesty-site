@@ -1,5 +1,5 @@
 {
-  "result": "ok",
+  "result": "failed",
   "people": 16762,
   "comments": 19269,
   "addedPeople": 63,
@@ -10,9 +10,9 @@
     "赦免"
   ],
   "durationSeconds": 565.8,
-  "checkedAt": "2026-10-26T08:37:21+08:00",
+  "checkedAt": "2026-10-26T15:54:40+08:00",
   "updatedAt": "2026-10-26T08:37:21+08:00",
-  "lastError": "BilibiliError: 视频 BV139HA6JEE6 评论抓取未完成：BilibiliError: 楼中楼 321867229040 第 1 页抓取失败：code=12006 没有该评论",
+  "lastError": "BilibiliApiError: code=-101 账号未登录",
   "truncatedContents": 2,
   "truncatedMissing": 27482,
   "incremental": true,
