@@ -1,24 +1,24 @@
 {
   "result": "ok",
-  "people": 24029,
-  "comments": 28695,
-  "addedPeople": 1318,
-  "addedComments": 1757,
+  "people": 25062,
+  "comments": 30186,
+  "addedPeople": 1033,
+  "addedComments": 1491,
   "excluded": 0,
   "source": "fetch",
   "keywords": [
     "赦免"
   ],
-  "durationSeconds": 1877.2,
-  "checkedAt": "2026-10-27T16:31:52+08:00",
-  "updatedAt": "2026-10-27T16:31:52+08:00",
+  "durationSeconds": 1656.9,
+  "checkedAt": "2026-10-27T23:07:01+08:00",
+  "updatedAt": "2026-10-27T23:07:01+08:00",
   "lastError": "BilibiliApiError: code=-101 账号未登录",
   "truncatedContents": 2,
   "truncatedMissing": 27482,
   "incremental": true,
-  "commentRows": 14441,
+  "commentRows": 15873,
   "changedContents": 23,
-  "privateMessages": 39,
+  "privateMessages": 92,
   "backfill": "手动补 4 人：模板请愿文（动态下）",
   "truncatedList": [
     {
