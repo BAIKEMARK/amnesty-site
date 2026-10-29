@@ -1,5 +1,5 @@
 {
-  "result": "ok",
+  "result": "failed",
   "people": 27369,
   "comments": 33662,
   "addedPeople": 278,
@@ -10,7 +10,7 @@
     "赦免"
   ],
   "durationSeconds": 1366.9,
-  "checkedAt": "2026-10-29T14:22:13+08:00",
+  "checkedAt": "2026-10-29T21:18:52+08:00",
   "updatedAt": "2026-10-29T14:22:13+08:00",
   "lastError": "BilibiliApiError: code=-101 账号未登录",
   "truncatedContents": 2,
