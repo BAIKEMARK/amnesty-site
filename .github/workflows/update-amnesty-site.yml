@@ -74,6 +74,12 @@ jobs:
               git add "amnesty-site/site/$name"
             fi
           done
+          # 小游戏题库、待审核清单、同步状态：refresh.py 每轮会维护
+          for path in pool.json sync-status.json review; do
+            if [ -e "amnesty-site/games/$path" ]; then
+              git add "amnesty-site/games/$path"
+            fi
+          done
           if git diff --cached --quiet; then
             echo "数据没有变化，跳过提交。"
             echo "changed=false" >> "$GITHUB_OUTPUT"

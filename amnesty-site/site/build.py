@@ -18,6 +18,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).parent
 DIST = ROOT / "dist"
+GAMES = ROOT.parent / "games"
 DATA_MARKER = '<script id="app-data" type="application/json">__DATA__</script>'
 SPLIT_MARKER = (
     '<script src="data.js"></script>\n'
@@ -38,6 +39,40 @@ def load_people() -> dict:
     return data
 
 
+def build_games(target: Path, subdir: str = "") -> None:
+    """小游戏：games/ 下的模板 + 样式 + 脚本 + 素材打成 games.html，题库外置为 games-data.js。
+
+    题库单独成文件并强制回源验证，每日题换新时不必重写约 1 MB 的 HTML。
+    """
+    base = f"/{subdir.strip('/')}/" if subdir else ""
+    pool = json.loads((GAMES / "pool.json").read_text(encoding="utf-8"))
+    # 来源 UID 和同步水位只给维护脚本用，不发给浏览器。
+    pool.pop("sync", None)
+    for item in pool["real"]:
+        item.pop("k", None)
+    html = (GAMES / "template.html").read_text(encoding="utf-8")
+    html = html.replace("__CSS__", (GAMES / "style.css").read_text(encoding="utf-8"))
+    html = html.replace("__JS__", (GAMES / "app.js").read_text(encoding="utf-8"))
+    html = html.replace("__qrcode_lib__", (ROOT / "assets/qrcode.js").read_text(encoding="utf-8"))
+    html = html.replace("__poolscript__", f'<script src="{base}games-data.js"></script>')
+    # 子站挂在 /xxx/ 下时站内链接写成绝对路径，不依赖 URL 结尾有没有斜杠。
+    for name in ("index.html", "archive.html"):
+        html = html.replace(f'href="{name}"', f'href="{base}{name}"')
+
+    font = base64.b64encode((GAMES / "assets/fonts/WhaleDecree.woff").read_bytes()).decode()
+    html = html.replace("__game_font_decree__", "data:font/woff;base64," + font)
+    for folder, prefix in ((ROOT / "assets", "__"), (GAMES / "assets", "__game_")):
+        for asset in folder.glob("*.webp"):
+            encoded = base64.b64encode(asset.read_bytes()).decode()
+            html = html.replace(f"{prefix}{asset.stem}__", "data:image/webp;base64," + encoded)
+    assert not re.search(r"__[a-z0-9_]+__", html), "games.html 仍有未替换的占位符"
+
+    target.mkdir(parents=True, exist_ok=True)
+    (target / "games.html").write_text(html, encoding="utf-8")
+    payload = json.dumps(pool, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
+    (target / "games-data.js").write_text("window.__GAME_POOL__=" + payload + ";", encoding="utf-8")
+
+
 def build(standalone: bool = False, out: Path | str = DIST, subdir: str = "") -> Path:
     """subdir 非空时输出到 out/<subdir>/，用于「门户 + 多个子站」的结构。"""
     out = Path(out)
@@ -48,6 +83,9 @@ def build(standalone: bool = False, out: Path | str = DIST, subdir: str = "") ->
     # 首屏统计值和外置 data.js 使用同一份数据，避免浏览器先闪出过期的旧人数。
     html = html.replace("__peoplecount__", f"{len(data['people']):,}")
     html = html.replace("__commentcount__", f"{data['commentCount']:,}")
+    # 离线单文件不带小游戏页，导航里就不放入口。
+    games_href = f"/{subdir.strip('/')}/games.html" if subdir else "games.html"
+    html = html.replace("__gamesnav__", "" if standalone else f'<a href="{games_href}" id="nav-games" class="nav-link">小游戏</a>')
 
     html = html.replace("__CSS__", (ROOT / "style.css").read_text(encoding="utf-8"))
     html = html.replace("__JS__", (ROOT / "app.js").read_text(encoding="utf-8"))
@@ -76,7 +114,7 @@ def build(standalone: bool = False, out: Path | str = DIST, subdir: str = "") ->
     if subdir:
         # 从「根目录直接放站点」迁到「子站」时，清掉根目录遗留的旧产物，
         # 否则 / 仍然是旧版页面，会和门户页打架。
-        for name in ("index.html", "archive.html", "data.js", "status.json"):
+        for name in ("index.html", "archive.html", "data.js", "games.html", "games-data.js", "status.json"):
             stale = out / name
             if stale.is_file():
                 stale.unlink()
@@ -95,6 +133,7 @@ def build(standalone: bool = False, out: Path | str = DIST, subdir: str = "") ->
             stale.unlink()
     else:
         (target / "data.js").write_text("window.__DATA__=" + payload + ";", encoding="utf-8")
+        build_games(target, subdir)
     status = ROOT / "status.json"
     if status.exists():
         (target / "status.json").write_text(status.read_text(encoding="utf-8"), encoding="utf-8")
@@ -119,7 +158,7 @@ def hosting_headers(sites: list[dict]) -> str:
     blocks = []
     for site in sites:
         prefix = site["href"].rstrip("/")
-        for name in ("data.js", "status.json"):
+        for name in ("data.js", "games-data.js", "status.json"):
             blocks.append(
                 f"{prefix}/{name}\n"
                 "  Cache-Control: public, max-age=0, must-revalidate\n"
