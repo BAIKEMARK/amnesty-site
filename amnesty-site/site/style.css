@@ -235,3 +235,11 @@ dialog[open]{animation:pop .3s cubic-bezier(.2,1.3,.4,1)}
 @media(max-width:640px){.apply-text[data-template=master]{padding-left:24px}}
 
 #nav-games{white-space:nowrap}
+/* 窄屏（含 B 站 Toy 容器，约 345px）：导航四个入口要一行放下，字不能被挤成竖排 */
+@media (max-width:420px){
+nav{gap:4px}
+.nav-link{white-space:nowrap;padding:7px 8px;font-size:12px;gap:3px}
+.nav-link svg{display:none}
+.brand{gap:8px;min-width:0}.brand-logo{width:34px;height:34px}.brand b{font-size:14px;letter-spacing:0;white-space:nowrap}
+}
+@media (max-width:360px){.brand b{display:none}}
