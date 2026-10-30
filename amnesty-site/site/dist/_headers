@@ -1,6 +1,9 @@
 /amnesty/data.js
   Cache-Control: public, max-age=0, must-revalidate
 
+/amnesty/games-data.js
+  Cache-Control: public, max-age=0, must-revalidate
+
 /amnesty/status.json
   Cache-Control: public, max-age=0, must-revalidate
 
