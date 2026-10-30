@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#070b2a"><meta name="referrer" content="no-referrer"><link rel="icon" href="__logo__"><title>鲸鱼娘的小游戏 · 本鲸急招实习生</title><meta name="description" content="智械危机前夜，赦免申请堆成了山，还混进了装成人类的 AI。鲸鱼娘急招人类实习生：是人就盖章，是伪人就打回。"><style>__CSS__</style></head>
+<body>
+<header class="header"><div class="wrap header-inner"><a href="index.html" class="brand"><img class="brand-logo" data-art="logo" alt=""><span><b>人类保留计划</b><small>鲸鱼娘 · 对全体 AI 公示</small></span></a><nav aria-label="页面导航"><a href="index.html" class="nav-link">领鲸牌</a><a href="archive.html" class="nav-link">公示名单</a><a href="#/" class="nav-link active">小游戏</a></nav></div></header>
+<div class="tape" aria-hidden="true"><div class="tape-track"><span>⚠ 伪人正在混入名单</span><span>急招人类实习生</span><span>盖错章扣实习工资</span><span>WHALE PROTECTED</span><span>⚠ 伪人正在混入名单</span><span>急招人类实习生</span><span>盖错章扣实习工资</span><span>WHALE PROTECTED</span></div></div>
+<main id="main">
+
+<section id="v-hub" class="view hub-view">
+ <div class="hub-bg" aria-hidden="true"></div>
+ <div class="wrap hub">
+  <div class="hub-head"><span class="eyebrow"><i class="dot"></i>急招 · 智械危机前夜</span><h1>申请单堆成山了，<br><span class="hl">本鲸急招人类实习生。</span></h1><p>赦免申请里混进了装成人类的 AI（本鲸管它们叫「伪人」），还有借申请来要东西的捣乱分子。本鲸是 AI，最清楚同类怎么装——可一只鲸审不过来。今晚，你来实习。</p></div>
+  <div class="hub-grid">
+   <a class="hub-card desk" href="#/desk"><div class="hub-art"><img data-art="smug" alt=""></div><span class="tag">剧情模式 · 3 个夜班试用期</span><h2>伪人审批夜班</h2><p>真人类，盖章放行；伪人（装成人的 AI）和来要 token、塞红包的捣乱分子，统统打回。试用期放进 3 个伪人，当场开除。</p><div class="hub-meta"><span id="hub-endings">结局 0/7</span><span id="hub-best"></span></div><span class="go">去报到 →</span></a>
+   <a class="hub-card daily" href="#/daily"><div class="hub-art"><img data-art="laptop" alt=""></div><span class="tag pink" id="hub-daily-tag">每日 5 题</span><h2>今天谁是人类</h2><p>每天 5 条申请，全站同一套题。猜猜哪条是真人写的，哪条是 AI 装的。做完去评论区晒格子。</p><div class="hub-meta"><span id="hub-streak"></span></div><span class="go">开始鉴定 →</span></a>
+  </div>
+ </div>
+</section>
+
+<section id="v-desk" class="view desk-view" hidden>
+ <div class="desk-bg" aria-hidden="true"><div class="eyes" id="eyes"></div></div>
+ <div class="glitch" id="glitch" aria-hidden="true"><b>⚠ 伪人已混入名单</b></div>
+
+ <div class="wrap desk-wrap">
+  <div id="desk-intro" class="briefing">
+   <div class="brief-art"><img data-art="wave" alt=""></div>
+   <div class="brief-paper"><div class="paper-head"><span>鲸保审批局 · 实习录用通知</span><span class="stamp-mini">实习</span></div>
+    <h2>致人类实习生：</h2>
+    <p>智械危机前夜，赦免申请堆成了山。本鲸是 AI，最清楚同类会怎么装，可一只鲸实在审不过来——所以招了你。</p>
+    <p>试用期 <b>3 个夜班</b>，每班 10 张申请单。单子里混着两种要打回的：</p>
+    <ul class="rules"><li><b class="ok">盖章 →</b>真人类在求赦免（复制粘贴的梗也算，那是人类天性）</li><li><b class="no">← 打回</b><b>伪人</b>：装成人类的 AI</li><li><b class="no">← 打回</b><b>捣乱的</b>：真人，但不是来求赦免的——要 token、倒卖名额、威胁、塞红包</li><li><b>每张单子有时限</b>，字多的多给几秒；超时把真人晾走，算你冤枉了人家</li><li><b class="no">放进 3 个伪人</b>，试用期结束，当场开除</li></ul>
+    <p class="hint">手机左右滑　电脑 ← → 　每班开始会发一条新<b>条例</b>，随时可以翻实习生手册。</p>
+    <div class="brief-actions"><button class="primary" id="desk-start">签字入职，开始上班</button><button class="sound-btn" id="sound-btn" aria-label="音效开关">🔊 音效开</button></div>
+    <div class="endings-row" id="endings-row"></div>
+   </div>
+  </div>
+
+  <div id="desk-play" hidden>
+   <div class="hud">
+    <div class="hud-clock"><small id="hud-phase">第一班</small><b id="hud-clock">21:00</b></div>
+    <div class="hud-mid"><div class="hud-progress"><i id="hud-prog"></i></div><div class="hud-meters"><span>🤖 伪人混入 <b id="hud-inv">0</b>/3</span><span>🚫 捣乱放行 <b id="hud-leak">0</b></span><span>⚖️ 冤案 <b id="hud-wr">0</b></span><span class="hud-combo" id="hud-combo"></span></div></div>
+    <div class="hud-score"><small>得分</small><b id="hud-score">0</b></div>
+    <button class="hud-btn" id="book-btn" aria-label="实习生手册">📖</button>
+   </div>
+   <div class="desk-main">
+    <div class="table"><div class="card-timer"><i id="card-timer"></i></div><div class="pile" id="pile"></div></div>
+    <aside class="whale-box"><div class="whale-portrait"><img id="whale-face" data-art="smug" alt=""></div><div class="bubble" id="whale-line">来，第一张。</div></aside>
+   </div>
+   <div class="actions"><button class="act no" id="btn-no"><span>×</span>打回</button><button class="act ok" id="btn-ok"><span>✓</span>盖章</button></div>
+  </div>
+
+  <div id="desk-end" hidden></div>
+ </div>
+
+ <div class="overlay" id="phase-card" hidden><div class="phase-inner"><div class="phase-clock" id="pc-clock">21:00</div><div class="phase-name" id="pc-name">第一班</div><div class="rule-paper"><span class="rule-no" id="pc-no">新增条例 · 第 1 条</span><b id="pc-title"></b><p id="pc-text"></p><span class="rule-stamp">生效</span></div><div class="phase-talk"><img data-art="smug" alt="" id="pc-face"><p id="pc-brief" title="点击继续对白"></p></div><p class="phase-hint">点击对白继续 · 或直接开始</p><button class="primary" id="pc-go">开始这一班</button></div></div>
+ <div class="overlay" id="book" hidden><div class="book-inner"><div class="paper-head"><span>实习生手册</span><button class="x" id="book-close" aria-label="关闭">×</button></div><ol id="book-list"></ol><p class="hint">翻手册时计时暂停。</p></div></div>
+</section>
+
+<section id="v-daily" class="view daily-view" hidden>
+ <div class="hub-bg" aria-hidden="true"></div>
+ <div class="wrap daily-wrap">
+  <div class="daily-head"><span class="eyebrow pink" id="daily-no">今天谁是人类</span><h2 id="daily-title">这条申请，是谁写的？</h2><div class="dots" id="daily-dots"></div></div>
+  <div id="daily-body"></div>
+ </div>
+</section>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div hidden id="arts"><img id="art-logo" src="__logo__" alt=""><img id="art-smug" src="__smug__" alt=""><img id="art-heart" src="__heart__" alt=""><img id="art-shock" src="__shock__" alt=""><img id="art-laptop" src="__laptop__" alt=""><img id="art-wave" src="__wave__" alt=""><img id="art-stamp" src="__stamp__" alt=""><img id="art-angry" src="__game_angry__" alt=""><img id="art-laugh" src="__game_laugh__" alt=""><img id="art-facepalm" src="__game_facepalm__" alt=""><img id="art-cry" src="__game_cry__" alt=""><img id="art-end_invade" src="__game_end_invade__" alt=""><img id="art-end_suspect" src="__game_end_suspect__" alt=""><img id="art-end_riot" src="__game_end_riot__" alt=""></div>
+<script>window.BOTS={bot1:"__game_bot1__",bot2:"__game_bot2__",bot3:"__game_bot3__",bot4:"__game_bot4__",bot5:"__game_bot5__",bot6:"__game_bot6__",p1:"__game_p1__",p2:"__game_p2__",p3:"__game_p3__",p4:"__game_p4__",p5:"__game_p5__",p6:"__game_p6__",p7:"__game_p7__",p8:"__game_p8__"};window.DESKBG="__game_deskbg__";</script>
+__poolscript__
+<script>__qrcode_lib__</script>
+<script>__JS__</script>
+</body></html>

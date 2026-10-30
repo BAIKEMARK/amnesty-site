@@ -189,17 +189,20 @@ def judge_rows(
     return accepted, known_scope
 
 
-def load_builder(site: Path):
-    """按目录加载站点自己的 build.py，--site-dir 指向副本时也能正确打包。"""
+def load_module(name: str, target: Path):
     import importlib.util
 
-    target = site / "build.py"
-    spec = importlib.util.spec_from_file_location("amnesty_site_build", target)
+    spec = importlib.util.spec_from_file_location(name, target)
     if spec is None or spec.loader is None:
         raise SystemExit(f"找不到 {target}")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
+
+
+def load_builder(site: Path):
+    """按目录加载站点自己的 build.py，--site-dir 指向副本时也能正确打包。"""
+    return load_module("amnesty_site_build", site / "build.py")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -339,6 +342,22 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"头像补全有 {failures} 个失败，下次会重试")
         except Exception as exc:  # noqa: BLE001
             print(f"[头像] 本轮跳过：{type(exc).__name__}: {exc}")
+
+    # 小游戏题库随名册一起维护；出任何问题都只跳过，不拦站点刷新。
+    try:
+        games_dir = site.parent / "games"
+        if games_dir.joinpath("sync.py").exists():
+            games_sync = load_module("amnesty_games_sync", games_dir / "sync.py")
+            report = games_sync.sync(data_path, site / "avatars.json", site / "exclude.json", games_dir)
+            real_stats, daily_stats = report["real"], report["daily"]
+            print(
+                f"[小游戏] 新增真人题 {real_stats['admitted']}、待审核 {real_stats['pending']}"
+                f"（共 {real_stats['pendingTotal']}）；日题已排到 {daily_stats['scheduledThrough']}"
+            )
+            for note in daily_stats["warnings"]:
+                print(f"[小游戏] 提醒：{note}")
+    except Exception as exc:  # noqa: BLE001
+        print(f"[小游戏] 本轮跳过：{type(exc).__name__}: {exc}")
 
     builder = load_builder(site)
     # 站点挂在 /amnesty/ 子路径下，根目录留给门户页（以后加别的子站）。
