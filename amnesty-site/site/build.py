@@ -39,22 +39,28 @@ def load_people() -> dict:
     return data
 
 
+def load_games_pool() -> dict:
+    pool = json.loads((GAMES / "pool.json").read_text(encoding="utf-8"))
+    # 来源 UID 和同步水位只给维护脚本用，不发给浏览器。
+    pool.pop("sync", None)
+    for item in pool["real"]:
+        item.pop("k", None)
+    return pool
+
+
 def build_games(target: Path, subdir: str = "") -> None:
     """小游戏：games/ 下的模板 + 样式 + 脚本 + 素材打成 games.html，题库外置为 games-data.js。
 
     题库单独成文件并强制回源验证，每日题换新时不必重写约 1 MB 的 HTML。
     """
     base = f"/{subdir.strip('/')}/" if subdir else ""
-    pool = json.loads((GAMES / "pool.json").read_text(encoding="utf-8"))
-    # 来源 UID 和同步水位只给维护脚本用，不发给浏览器。
-    pool.pop("sync", None)
-    for item in pool["real"]:
-        item.pop("k", None)
+    pool = load_games_pool()
     html = (GAMES / "template.html").read_text(encoding="utf-8")
     html = html.replace("__CSS__", (GAMES / "style.css").read_text(encoding="utf-8"))
     html = html.replace("__JS__", (GAMES / "app.js").read_text(encoding="utf-8"))
     html = html.replace("__qrcode_lib__", (ROOT / "assets/qrcode.js").read_text(encoding="utf-8"))
     html = html.replace("__poolscript__", f'<script src="{base}games-data.js"></script>')
+    html = html.replace("__toysdk__", "")  # Toy SDK 只在 Toy 包里加载
     # 子站挂在 /xxx/ 下时站内链接写成绝对路径，不依赖 URL 结尾有没有斜杠。
     for name in ("index.html", "archive.html"):
         html = html.replace(f'href="{name}"', f'href="{base}{name}"')
