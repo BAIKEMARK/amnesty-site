@@ -2700,7 +2700,7 @@ async function endDesk(){stopLoop();$$('.overlay').forEach(o=>o.hidden=true);SFX
   <div class="btns"><button class="primary pinkb" id="img-desk">保存结局海报</button><button class="ghost" id="copy-desk">复制战绩去评论区</button><button class="ghost" id="again">再上一次夜班</button><a class="ghost" href="#/daily">今日鉴定 →</a></div>
   <div class="endings-row" id="endings-row2"></div></div></div>`;
   const row=$('#endings-row2');row.innerHTML=`<b>已解锁结局 ${got.size}/${POOL.endings.length}，换个玩法试试别的结局</b>`+POOL.endings.map(x=>got.has(x.id)?`<span>${esc(x.title)}</span>`:'<span class="locked">？？？</span>').join('');
-  $('#again').onclick=startDesk;$('#copy-desk').onclick=()=>copy(share);
+  addToyShare($('#desk-end .btns'));$('#again').onclick=startDesk;$('#copy-desk').onclick=()=>copy(share);
   $('#img-desk').onclick=()=>poster({art:art(e.art),scene:isScene,kicker:e.kicker,title:e.title,text,whale:e.whale,tags,stats:[[`${purity}%`,'人类纯度'],[caughtAI,'打回伪人'],[G.invaders.length,'混入伪人'],[G.score.toLocaleString(),'得分']],url:SITE+'#/desk',file:`伪人审批夜班-${e.title}.png`,cta:'你能熬过鲸鱼娘的实习期吗？'});window.scrollTo({top:0,behavior:'smooth'})}
 
 /* ---------- 今天谁是人类 ---------- */
@@ -2742,7 +2742,7 @@ function dailyResult(){D.i=D.qs.length;dots();const{r,sc,fooled,wronged}=dailyAr
   $('#daily-body').innerHTML=`<div class="d-result"><div class="d-hero"><img src="${art(r.whale)}" alt=""><span class="eyebrow pink">第 ${dayNo()} 期 · 连续 ${s} 天</span><div class="d-grid">${grid}</div><div class="d-title">${esc(r.title)}</div><div class="d-score">${sc}/5 · ${esc(extra)}</div><p class="d-line">${esc(r.line)}</p><p class="countdown" id="cd"></p></div>
    <div class="d-review">${D.qs.map((q,i)=>`<div><i>${D.ans[i]?'🟦':'🟥'}</i><span>${esc(q.text.replace(/\n/g,' ').slice(0,40))}${q.text.length>40?'…':''}</span><em>${q.kind==='human'?'真人 @'+esc(q.name):'AI'}</em></div>`).join('')}</div>
    <div class="share-box">${esc(share)}</div><div class="btns"><button class="primary pinkb" id="img-daily">保存鉴定海报</button><button class="ghost" id="copy-daily">复制去评论区晒</button><a class="ghost" href="#/desk">去上夜班 →</a></div></div>`;
-  $('#copy-daily').onclick=()=>copy(share);
+  $('#copy-daily').onclick=()=>copy(share);addToyShare($('.d-result .btns'));
   $('#img-daily').onclick=()=>poster({art:art(r.whale),scene:false,kicker:`今天谁是人类 · 第 ${dayNo()} 期`,title:r.title,text:r.line,whale:extra,grid:D.ans,tags:[`连续鉴定 ${s} 天`],stats:[[`${sc}/5`,'答对'],[fooled,'被 AI 骗'],[wronged,'冤枉真人']],url:SITE+'#/daily',file:`今天谁是人类-第${dayNo()}期.png`,cta:'你分得清人类和 AI 吗？'});
   const tick=()=>{const el=$('#cd');if(!el)return;const n=cstDate();const ms=((24-n.getHours())*3600-n.getMinutes()*60-n.getSeconds())*1000;el.textContent=`下一期还有 ${Math.floor(ms/36e5)} 小时 ${Math.floor(ms%36e5/6e4)} 分`;setTimeout(tick,30000)};tick()}
 
@@ -2750,7 +2750,15 @@ function dailyResult(){D.i=D.qs.length;dots();const{r,sc,fooled,wronged}=dailyAr
 function load(src){return new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src})}
 function wrap(x,text,maxW){const out=[];let line='';for(const ch of text){if(x.measureText(line+ch).width>maxW){out.push(line);line=ch}else line+=ch}if(line)out.push(line);return out}
 const F=(w,s)=>`${w} ${s}px "PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif`;
-async function poster(o){try{await document.fonts.ready;const W=1080,H=1500,cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');
+/* ---------- Toy 适配：只在 B 站 Toy 容器里（window.toy 存在）生效 ---------- */
+const inToy=()=>!!(window.toy&&typeof window.toy.isSupport==='function');
+async function toyCan(name){try{return inToy()&&await toy.isSupport(name)}catch(e){return false}}
+async function toyQrImage(){try{if(await toyCan('getQrCode'))return await load((await toy.getQrCode({path:'games.html',size:360})).base64)}catch(e){}return null}
+async function deliverPoster(cv,file){let url=cv.toDataURL('image/png');
+  if(await toyCan('saveImageToAlbum')){try{if(url.length>1.9e6)url=cv.toDataURL('image/jpeg',.9);await toy.saveImageToAlbum({base64Data:url,hintMsg:'需要相册权限来保存海报'});toast('海报已保存到相册，发出去吓吓朋友');return}catch(e){}}
+  showPoster(url,file)}
+async function addToyShare(box){if(!box||!await toyCan('share'))return;const b=document.createElement('button');b.className='ghost';b.textContent='分享给朋友';b.onclick=async()=>{try{await toy.share({path:'games.html'})}catch(e){toast('分享没成功，试试保存海报')}};box.append(b)}
+async function poster(o){try{await document.fonts.ready;const toyQr=await toyQrImage();const W=1080,H=1500,cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');
   x.fillStyle='#070b2a';x.fillRect(0,0,W,H);const top=540;
   x.save();x.beginPath();x.rect(0,0,W,top);x.clip();
   if(o.scene){const im=await load(o.art),s=Math.max(W/im.width,top/im.height);x.drawImage(im,(W-im.width*s)/2,(top-im.height*s)/2,im.width*s,im.height*s)}
@@ -2769,9 +2777,9 @@ async function poster(o){try{await document.fonts.ready;const W=1080,H=1500,cv=d
   // Poster content must end before the fixed QR footer.
   const by=1270;if(y+74>by-16)throw new Error('poster overflow');
   const bg2=x.createLinearGradient(0,by,W,H);bg2.addColorStop(0,'#243ca6');bg2.addColorStop(.55,'#5531a3');bg2.addColorStop(1,'#96225e');x.fillStyle=bg2;x.fillRect(0,by,W,H-by);
-  x.fillStyle='#fff';x.font=F(900,42);x.fillText(o.cta,56,by+86);x.font=F(700,25);x.fillStyle='#edf0ff';x.fillText('扫码来玩 · 鲸鱼娘小游戏',56,by+135);x.font='600 22px ui-monospace,Consolas,monospace';x.fillText('whaleychan.com/amnesty/games.html',56,by+177);
-  const qr=qrcode(0,'M');qr.addData(o.url);qr.make();const n=qr.getModuleCount(),size=180,cell=size/n,qx=W-56-size-16,qy=by+25;x.fillStyle='#fff';x.beginPath();x.roundRect(qx-12,qy-12,size+24,size+24,14);x.fill();x.fillStyle='#172052';for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(qr.isDark(r,c))x.fillRect(qx+c*cell,qy+r*cell,Math.ceil(cell),Math.ceil(cell));
-  showPoster(cv.toDataURL('image/png'),o.file)
+  x.fillStyle='#fff';x.font=F(900,42);x.fillText(o.cta,56,by+86);x.font=F(700,25);x.fillStyle='#edf0ff';x.fillText('扫码来玩 · 鲸鱼娘小游戏',56,by+135);x.font='600 22px ui-monospace,Consolas,monospace';x.fillText(toyQr?'B 站 Toy · 人类保留计划':'whaleychan.com/amnesty/games.html',56,by+177);
+  const size=180,qx=W-56-size-16,qy=by+25;x.fillStyle='#fff';x.beginPath();x.roundRect(qx-12,qy-12,size+24,size+24,14);x.fill();if(toyQr)x.drawImage(toyQr,qx,qy,size,size);else{const qr=qrcode(0,'M');qr.addData(o.url);qr.make();const n=qr.getModuleCount(),cell=size/n;x.fillStyle='#172052';for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(qr.isDark(r,c))x.fillRect(qx+c*cell,qy+r*cell,Math.ceil(cell),Math.ceil(cell))}
+  await deliverPoster(cv,o.file)
 }catch(e){console.error('poster:',e);toast('海报没生成出来，先复制战绩文字吧')}}
 route();
 </script>
