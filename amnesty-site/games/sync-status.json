@@ -1,18 +1,20 @@
 {
- "updatedAt": "2026-10-31T21:15:19+08:00",
+ "updatedAt": "2026-11-01T02:59:57+08:00",
  "real": {
   "admitted": 40,
-  "pending": 17,
+  "pending": 11,
   "purged": 0,
   "applied": 0,
   "backfilled": 0,
-  "pendingTotal": 44,
-  "realTotal": 673
+  "pendingTotal": 55,
+  "realTotal": 713
  },
  "daily": {
-  "created": [],
-  "scheduledThrough": "2026-11-03",
-  "aiTrapsUnusedRecently": 40,
+  "created": [
+   "2026-11-04"
+  ],
+  "scheduledThrough": "2026-11-04",
+  "aiTrapsUnusedRecently": 37,
   "warnings": []
  }
 }
