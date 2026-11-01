@@ -20,6 +20,8 @@ from pathlib import Path
 ROOT = Path(__file__).parent
 DIST = ROOT / "dist"
 HOME = ROOT.parent / "home"  # 根路径主页（whaleychan.com/），见 home/build_home.py
+# 顶部「返回主页」：只在部署版出现（Toy 包、离线单文件没有站点根路径）
+HOMEBACK = '<a class="nav-link nav-home" href="/" aria-label="返回鲸鱼娘主页" title="返回鲸鱼娘主页"><img src="/home-assets/avatar.webp" alt="" width="22" height="22"><span>主页</span></a>'
 GAMES = ROOT.parent / "games"
 DATA_MARKER = '<script id="app-data" type="application/json">__DATA__</script>'
 SPLIT_MARKER = (
@@ -94,6 +96,7 @@ def build(standalone: bool = False, out: Path | str = DIST, subdir: str = "") ->
     # 离线单文件不带小游戏页，导航里就不放入口。
     games_href = f"/{subdir.strip('/')}/games.html" if subdir else "games.html"
     html = html.replace("__gamesnav__", "" if standalone else f'<a href="{games_href}" id="nav-games" class="nav-link">小游戏</a>')
+    html = html.replace("__homeback__", "" if standalone else HOMEBACK)
 
     html = html.replace("__CSS__", (ROOT / "style.css").read_text(encoding="utf-8"))
     html = html.replace("__JS__", (ROOT / "app.js").read_text(encoding="utf-8"))
@@ -162,6 +165,7 @@ def build_toy(out: Path | str) -> Path:
     html = html.replace("__peoplecount__", f"{len(data['people']):,}")
     html = html.replace("__commentcount__", f"{data['commentCount']:,}")
     html = html.replace("__gamesnav__", "")  # Toy 包不带小游戏页，导航里不放入口
+    html = html.replace("__homeback__", "")
 
     # A Toy package is a published snapshot. Keep the status block honest so
     # it never suggests that this copy will receive Cloudflare updates.

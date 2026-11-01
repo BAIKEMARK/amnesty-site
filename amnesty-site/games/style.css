@@ -192,3 +192,9 @@ button,a.primary,.nav-link{min-height:44px}.nav-link{display:inline-flex;align-i
 .pop-img{width:100%;max-height:66vh;object-fit:contain;border-radius:12px;margin:0 auto;user-select:auto;-webkit-user-select:auto;-webkit-touch-callout:default;-webkit-user-drag:auto;box-shadow:0 20px 60px rgba(0,0,0,.6)}
 .pop-text{width:100%;height:42vh;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.35);color:var(--white);padding:12px;font:inherit;font-size:14px;line-height:1.6;resize:none}
 .pop-box .btns{justify-content:center}.pop-box .ghost{color:var(--white)}
+
+/* 导航第一项：返回鲸鱼娘主页（站点根路径），不占 logo 位置 */
+.nav-link.nav-home{display:inline-flex;align-items:center;gap:6px}
+.nav-home img{width:22px;height:22px;border-radius:50%;flex:none}
+@media (max-width:480px){.nav-home span{display:none}.nav-link.nav-home{padding-left:4px;padding-right:4px}}
+@media (max-width:480px){.brand>span{display:none}.nav-link{padding:6px 7px;font-size:12.5px}}
