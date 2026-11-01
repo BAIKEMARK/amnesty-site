@@ -1,3 +1,1 @@
-# 根路径直接进子站，不保留门户页
-/            /amnesty/  301
-/index.html  /amnesty/  301
+# 根路径是鲸鱼娘主页（home/build_home.py），子站各走各的路径

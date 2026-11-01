@@ -7,6 +7,9 @@
 /amnesty/status.json
   Cache-Control: public, max-age=0, must-revalidate
 
+/home-data.js
+  Cache-Control: public, max-age=0, must-revalidate
+
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: no-referrer
