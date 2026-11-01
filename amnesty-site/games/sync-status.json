@@ -1,13 +1,13 @@
 {
- "updatedAt": "2026-11-01T07:44:52+08:00",
+ "updatedAt": "2026-11-01T14:42:25+08:00",
  "real": {
   "admitted": 40,
-  "pending": 12,
+  "pending": 16,
   "purged": 0,
   "applied": 0,
   "backfilled": 0,
-  "pendingTotal": 67,
-  "realTotal": 753
+  "pendingTotal": 83,
+  "realTotal": 793
  },
  "daily": {
   "created": [],
