@@ -14,10 +14,12 @@ import argparse
 import base64
 import json
 import re
+import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).parent
 DIST = ROOT / "dist"
+HOME = ROOT.parent / "home"  # 根路径主页（whaleychan.com/），见 home/build_home.py
 GAMES = ROOT.parent / "games"
 DATA_MARKER = '<script id="app-data" type="application/json">__DATA__</script>'
 SPLIT_MARKER = (
@@ -146,6 +148,70 @@ def build(standalone: bool = False, out: Path | str = DIST, subdir: str = "") ->
     return target
 
 
+def build_toy(out: Path | str) -> Path:
+    """Build a Bilibili Toy package with a small HTML entry file.
+
+    Toy checks the decompressed index.html separately, so the page shell and
+    its data/assets must stay as ordinary package files instead of data URIs.
+    """
+    target = Path(out)
+    target.mkdir(parents=True, exist_ok=True)
+    data = load_people()
+    payload = json.dumps(data, ensure_ascii=False).replace("<", "\\u003c")
+    html = (ROOT / "template.html").read_text(encoding="utf-8")
+    html = html.replace("__peoplecount__", f"{len(data['people']):,}")
+    html = html.replace("__commentcount__", f"{data['commentCount']:,}")
+    html = html.replace("__gamesnav__", "")  # Toy 包不带小游戏页，导航里不放入口
+
+    # A Toy package is a published snapshot. Keep the status block honest so
+    # it never suggests that this copy will receive Cloudflare updates.
+    html = html.replace('class="update-card" id="update-pill"', 'class="update-card toy-snapshot"')
+    html = html.replace("下一轮巡查", "本版名单快照")
+    html = html.replace("<b>每 2 小时</b>", "<b>发布时记录</b>")
+    html = html.replace('<strong id="next-update">--:--</strong>', "<strong>静态版本</strong>")
+    html = html.replace('<span id="update-countdown">--:--:--</span>', "<span>需手动更新</span>")
+    html = html.replace(
+        '<div class="update-card-meta" id="update-note">正在计算下次更新…</div>',
+        '<div class="update-card-meta">本版本名单更新较慢，最新名单请前往鲸鱼娘官网查看。</div>',
+    )
+
+    html = html.replace("<style>__CSS__</style>", '<link rel="stylesheet" href="style.css">')
+    html = html.replace(DATA_MARKER, '<script src="data.js"></script>\n<script id="app-data" type="application/json"></script>')
+    html = html.replace('<script>__qrcode_lib__</script>', '<script src="qrcode.js"></script>')
+    html = html.replace('<script>__JS__</script>', '<script src="app.js"></script>')
+
+    css = (ROOT / "style.css").read_text(encoding="utf-8")
+    for asset in (ROOT / "assets").glob("*.webp"):
+        css = css.replace(f"__{asset.stem}__", f"assets/{asset.name}")
+        html = html.replace(f"__{asset.stem}__", f"assets/{asset.name}")
+    css = css.replace("__font_inscription__", "assets/fonts/WhaleInscription.woff")
+    css = css.replace("__font_decree__", "assets/fonts/WhaleDecree.woff")
+
+    assert not re.search(r"__[a-z]+__", html), "Toy HTML 仍有未替换的占位符"
+    assert not re.search(r"__[a-z]+__", css), "Toy CSS 仍有未替换的占位符"
+    (target / "index.html").write_text(html, encoding="utf-8")
+    archive = html.replace(
+        '<script src="app.js"></script>',
+        '<script>if(!location.hash)history.replaceState(null,"","#/archive");</script>\n<script src="app.js"></script>',
+        1,
+    )
+    (target / "archive.html").write_text(archive, encoding="utf-8")
+    (target / "style.css").write_text(css, encoding="utf-8")
+    (target / "app.js").write_text((ROOT / "app.js").read_text(encoding="utf-8"), encoding="utf-8")
+    (target / "qrcode.js").write_text((ROOT / "assets" / "qrcode.js").read_text(encoding="utf-8"), encoding="utf-8")
+    (target / "data.js").write_text("window.__DATA__=" + payload + ";", encoding="utf-8")
+
+    asset_dir = target / "assets"
+    font_dir = asset_dir / "fonts"
+    asset_dir.mkdir(exist_ok=True)
+    font_dir.mkdir(exist_ok=True)
+    for asset in (ROOT / "assets").glob("*.webp"):
+        shutil.copy2(asset, asset_dir / asset.name)
+    for font in (ROOT / "assets" / "fonts").glob("*.woff"):
+        shutil.copy2(font, font_dir / font.name)
+    return target
+
+
 PORTAL_SITES = [
     {
         "href": "/amnesty/",
@@ -154,6 +220,10 @@ PORTAL_SITES = [
         "desc": "在 B 站评论区里求过赦免的人类，本鲸都记着。可以查自己、领鲸牌、下载丹书铁券。",
     },
 ]
+
+def has_home() -> bool:
+    return (HOME / "template.html").is_file()
+
 
 def hosting_headers(sites: list[dict]) -> str:
     """Cloudflare Pages 的 _headers 语法（Vercel 侧走 vercel.json，互不干扰）。
@@ -169,6 +239,8 @@ def hosting_headers(sites: list[dict]) -> str:
                 f"{prefix}/{name}\n"
                 "  Cache-Control: public, max-age=0, must-revalidate\n"
             )
+    if has_home():
+        blocks.append("/home-data.js\n  Cache-Control: public, max-age=0, must-revalidate\n")
     blocks.append(
         "/*\n"
         "  X-Content-Type-Options: nosniff\n"
@@ -191,7 +263,7 @@ p{margin:0;color:#93a4c4}
 a{margin-top:22px;color:#84a8ff;text-decoration:none;font-weight:600}
 a:hover{text-decoration:underline}
 </style></head><body>
-<b>404</b><p>这条路上什么也没有。</p><a href="/amnesty/">回赦免名单</a>
+<b>404</b><p>这条路上什么也没有。本鲸潜下去找过了。</p><a href="/">回主页</a><a href="/amnesty/" style="margin-top:8px">回赦免名单</a>
 </body></html>"""
 
 
@@ -206,17 +278,21 @@ def write_site_meta(out: Path | str, sites: list[dict] | None = None) -> Path:
     out.mkdir(parents=True, exist_ok=True)
     (out / "_headers").write_text(hosting_headers(sites), encoding="utf-8")
     entry = sites[0]["href"]
-    (out / "_redirects").write_text(
-        "# 根路径直接进子站，不保留门户页\n"
-        f"/            {entry}  301\n"
-        f"/index.html  {entry}  301\n",
-        encoding="utf-8",
-    )
+    if has_home():
+        # 有主页：根路径留给 home/，不再跳转；index.html 由 build_home.py 写入
+        (out / "_redirects").write_text("# 根路径是鲸鱼娘主页（home/build_home.py），子站各走各的路径\n", encoding="utf-8")
+    else:
+        (out / "_redirects").write_text(
+            "# 根路径直接进子站，不保留门户页\n"
+            f"/            {entry}  301\n"
+            f"/index.html  {entry}  301\n",
+            encoding="utf-8",
+        )
+        # 旧版本可能在根目录留了门户页，清掉，否则它会盖住跳转
+        stale = out / "index.html"
+        if stale.is_file():
+            stale.unlink()
     (out / "404.html").write_text(NOT_FOUND_PAGE, encoding="utf-8")
-    # 旧版本可能在根目录留了门户页，清掉，否则它会盖住跳转
-    stale = out / "index.html"
-    if stale.is_file():
-        stale.unlink()
     return out
 
 
@@ -224,10 +300,18 @@ def write_site_meta(out: Path | str, sites: list[dict] | None = None) -> Path:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="把源码、数据、素材打包成静态站点")
     parser.add_argument("--standalone", action="store_true", help="生成内嵌数据的离线单文件")
+    parser.add_argument("--toy", action="store_true", help="生成 B 站 Toy 多文件包（入口 HTML 小于 1 MB）")
     parser.add_argument("--out", type=Path, default=DIST, help=f"输出目录（默认：{DIST}）")
     parser.add_argument("--subdir", default="", help="输出到子目录，如 amnesty")
     parser.add_argument("--meta", action="store_true", help="在输出根目录写 _headers / _redirects / 404.html")
     args = parser.parse_args(argv)
+    if args.toy and args.standalone:
+        parser.error("--toy 与 --standalone 不能同时使用")
+    if args.toy:
+        out = build_toy(args.out)
+        size = sum(path.stat().st_size for path in out.rglob("*") if path.is_file())
+        print(f"Build complete: Bilibili Toy package -> {out} ({size} bytes)")
+        return 0
     out = build(standalone=args.standalone, out=args.out, subdir=args.subdir)
     if args.meta and not args.standalone:
         write_site_meta(args.out)

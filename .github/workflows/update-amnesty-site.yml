@@ -46,7 +46,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: 安装抓取依赖
-        run: python -m pip install "requests>=2.28" "openai>=1.0" "pypinyin>=0.50"
+        run: python -m pip install "requests>=2.28" "openai>=1.0" "pypinyin>=0.50" "fonttools>=4.40"
       - name: 决定本轮口径
         id: mode
         run: |
@@ -72,6 +72,12 @@ jobs:
           for name in data.json status.json crawl-state.json avatars.json dist; do
             if [ -e "amnesty-site/site/$name" ]; then
               git add "amnesty-site/site/$name"
+            fi
+          done
+          # 主页的 B 站数据与涨势曲线：抓不到时下一轮沿用
+          for name in bili.json history.json; do
+            if [ -e "amnesty-site/home/$name" ]; then
+              git add "amnesty-site/home/$name"
             fi
           done
           # 小游戏题库、待审核清单、同步状态：refresh.py 每轮会维护
@@ -102,6 +108,7 @@ jobs:
           # 全局安装而不是 npx：npx 在部分环境下不透传环境变量，token 会被忽略
           npm i -g wrangler@4 >/dev/null
           wrangler pages project create whalegirl --production-branch=main 2>/dev/null || true
+          # 在仓库根目录执行：wrangler 会顺带打包根目录 functions/（主页实时数据 /api/bili）
           wrangler pages deploy "amnesty-site/site/dist" \
             --project-name=whalegirl \
             --branch=main \

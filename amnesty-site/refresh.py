@@ -363,6 +363,17 @@ def main(argv: list[str] | None = None) -> int:
     # 站点挂在 /amnesty/ 子路径下，根目录留给门户页（以后加别的子站）。
     builder.build(standalone=False, out=site / "dist", subdir="amnesty")
     builder.write_site_meta(site / "dist")
+    home_build = site.parent / "home" / "build_home.py"
+    if home_build.exists():
+        # 主页失败不影响名单站：抓不到 B 站数据就沿用上一版 bili.json
+        try:
+            home = load_module("whale_home_build", home_build)
+            if args.fetch:
+                load_module("whale_home_fetch", home_build.parent / "fetch_bili.py").main()
+            home.build(site / "dist")
+            print("[主页] 已打包到 dist/index.html")
+        except Exception as exc:  # noqa: BLE001
+            print(f"[主页] 本轮跳过：{type(exc).__name__}: {exc}")
     if args.standalone:
         builder.build(standalone=True, out=site / "dist-standalone")
     write_status(
