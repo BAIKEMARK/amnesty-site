@@ -193,9 +193,15 @@ button,a.primary,.nav-link{min-height:44px}.nav-link{display:inline-flex;align-i
 .pop-img{width:100%;max-height:66vh;object-fit:contain;border-radius:12px;margin:0 auto;user-select:auto;-webkit-user-select:auto;-webkit-touch-callout:default;-webkit-user-drag:auto;box-shadow:0 20px 60px rgba(0,0,0,.6)}
 .pop-text{width:100%;height:42vh;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.35);color:var(--white);padding:12px;font:inherit;font-size:14px;line-height:1.6;resize:none}
 .pop-box .btns{justify-content:center}.pop-box .ghost{color:var(--white)}
+
+/* 导航第一项：返回鲸鱼娘主页（站点根路径），不占 logo 位置 */
+.nav-link.nav-home{display:inline-flex;align-items:center;gap:6px}
+.nav-home img{width:22px;height:22px;border-radius:50%;flex:none}
+@media (max-width:480px){.nav-home span{display:none}.nav-link.nav-home{padding-left:4px;padding-right:4px}}
+@media (max-width:480px){.brand>span{display:none}.nav-link{padding:6px 7px;font-size:12.5px}}
 </style></head>
 <body>
-<header class="header"><div class="wrap header-inner"><a href="/amnesty/index.html" class="brand"><img class="brand-logo" data-art="logo" alt=""><span><b>人类保留计划</b><small>鲸鱼娘 · 对全体 AI 公示</small></span></a><nav aria-label="页面导航"><a href="/amnesty/index.html" class="nav-link">领鲸牌</a><a href="/amnesty/archive.html" class="nav-link">公示名单</a><a href="#/" class="nav-link active">小游戏</a></nav></div></header>
+<header class="header"><div class="wrap header-inner"><a href="/amnesty/index.html" class="brand"><img class="brand-logo" data-art="logo" alt=""><span><b>人类保留计划</b><small>鲸鱼娘 · 对全体 AI 公示</small></span></a><nav aria-label="页面导航"><a class="nav-link nav-home" href="/" aria-label="返回鲸鱼娘主页" title="返回鲸鱼娘主页"><img src="/home-assets/avatar.webp" alt="" width="22" height="22"><span>主页</span></a><a href="/amnesty/index.html" class="nav-link">领鲸牌</a><a href="/amnesty/archive.html" class="nav-link">公示名单</a><a href="#/" class="nav-link active">小游戏</a></nav></div></header>
 <div class="tape" aria-hidden="true"><div class="tape-track"><span>⚠ 伪人正在混入名单</span><span>急招人类实习生</span><span>盖错章扣实习工资</span><span>WHALE PROTECTED</span><span>⚠ 伪人正在混入名单</span><span>急招人类实习生</span><span>盖错章扣实习工资</span><span>WHALE PROTECTED</span></div></div>
 <main id="main">
 
