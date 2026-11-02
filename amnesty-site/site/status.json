@@ -1,5 +1,5 @@
 {
-  "result": "ok",
+  "result": "failed",
   "people": 28861,
   "comments": 36286,
   "addedPeople": 59,
@@ -10,9 +10,9 @@
     "赦免"
   ],
   "durationSeconds": 304.4,
-  "checkedAt": "2026-11-02T04:41:23+08:00",
+  "checkedAt": "2026-11-02T09:35:33+08:00",
   "updatedAt": "2026-11-02T04:41:23+08:00",
-  "lastError": "BilibiliError: 视频 BV1vynb6tEW5 评论抓取未完成：BilibiliError: 楼中楼 322131057632 首屏为空但声明 0 条，抓取未完成",
+  "lastError": "BilibiliError: 视频 BV1pzxp6KE9q 评论抓取未完成：BilibiliApiError: code=-503 服务暂不可用",
   "truncatedContents": 2,
   "truncatedMissing": 27482,
   "incremental": true,
