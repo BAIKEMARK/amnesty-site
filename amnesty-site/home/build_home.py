@@ -36,7 +36,18 @@ SHARED = {
 PACK = HOME / "assets.pack.json"
 FONT = HOME / "fonts" / "MaShanZheng-Regular.ttf"
 OLD_FONT = SITE / "assets" / "fonts" / "WhaleDecree.woff"
+MBTI = HOME.parent / "mbti"  # MBTI 小测验的 16 张结果图，也并入表情包
 ROUTES = ["whale", "day", "log", "memes", "stats", "extra"]
+
+
+def mbti_stickers() -> list[dict]:
+    """MBTI 的 16 张鲸鱼娘表情（透明底版，由 mbti/cutout.py 生成），追加在表情包最后。"""
+    path = MBTI / "questions.json"
+    if not path.exists():
+        return []
+    types = json.loads(path.read_text(encoding="utf-8")).get("types", {})
+    return [{"img": f"mbti-{k}", "name": f"{k} {v['name']}"} for k, v in types.items()
+            if (MBTI / "assets" / "types-cut" / f"{k}.webp").exists()]
 
 
 def amnesty_counts() -> dict:
@@ -53,6 +64,7 @@ def build(out: Path | str = DIST) -> Path:
     out = Path(out)
     bili = json.loads((HOME / "bili.json").read_text(encoding="utf-8"))
     content = json.loads((HOME / "content.json").read_text(encoding="utf-8"))
+    content["stickers"] = list(content.get("stickers", [])) + mbti_stickers()
     css = (HOME / "style.css").read_text(encoding="utf-8")
     js = (HOME / "app.js").read_text(encoding="utf-8")
     tpl = (HOME / "template.html").read_text(encoding="utf-8")
@@ -158,6 +170,8 @@ def write_assets(dest: Path) -> None:
     for name, src in SHARED.items():
         if not (dest / name).exists() and src.exists():
             shutil.copy2(src, dest / name)
+    for s in mbti_stickers():
+        shutil.copy2(MBTI / "assets" / "types-cut" / f"{s['img'][5:]}.webp", dest / f"{s['img']}.webp")
     content = json.loads((HOME / "content.json").read_text(encoding="utf-8"))
     refs = set(re.findall(r"[\w-]+\.(?:webp|jpg|png)", json.dumps(content) + (HOME / "template.html").read_text(encoding="utf-8") + (HOME / "app.js").read_text(encoding="utf-8")))
     refs = {r for r in refs if not r[0].isdigit()}  # 排除 B 站封面尺寸后缀（@480w_270h_1c.webp）

@@ -374,6 +374,14 @@ def main(argv: list[str] | None = None) -> int:
             print("[主页] 已打包到 dist/index.html")
         except Exception as exc:  # noqa: BLE001
             print(f"[主页] 本轮跳过：{type(exc).__name__}: {exc}")
+    mbti_build = site.parent / "mbti" / "build_mbti.py"
+    if mbti_build.exists():
+        # MBTI 小测验（/mbti/）是纯静态页，失败不影响名单站和主页
+        try:
+            load_module("whale_mbti_build", mbti_build).build(site / "dist")
+            print("[MBTI] 已打包到 dist/mbti/index.html")
+        except Exception as exc:  # noqa: BLE001
+            print(f"[MBTI] 本轮跳过：{type(exc).__name__}: {exc}")
     if args.standalone:
         builder.build(standalone=True, out=site / "dist-standalone")
     write_status(
