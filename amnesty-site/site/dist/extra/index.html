@@ -272,6 +272,10 @@ a.card{transition:border-color .2s,transform .2s}a.card:hover{border-color:rgba(
 .side.amnesty{background:linear-gradient(160deg,rgba(255,93,82,.12),rgba(16,24,72,.8) 60%)}
 .side.amnesty::before{content:"";position:absolute;right:-30px;top:-30px;width:200px;height:200px;background:url(/home-assets/stamp.webp) center/contain no-repeat;opacity:.45;transform:rotate(12deg)}
 .side.games::before{content:"";position:absolute;inset:0;background:url(/home-assets/suspect.webp) right center/cover no-repeat;opacity:.38;mask-image:linear-gradient(90deg,transparent 10%,#000 70%);-webkit-mask-image:linear-gradient(90deg,transparent 10%,#000 70%)}
+.side.mbti{background:linear-gradient(160deg,rgba(63,224,255,.12),rgba(16,24,72,.8) 60%)}
+.side.mbti::before{content:"";position:absolute;top:14px;bottom:14px;right:14px;width:min(190px,34%);border-radius:16px;background:url(/mbti/img/ENFJ.webp) center/cover no-repeat}
+.side.mbti>*{max-width:calc(100% - min(190px,34%) - 24px)}
+.lat{font-family:var(--font);font-weight:900;color:var(--cyan)}
 .side>*{position:relative}
 .pill{align-self:flex-start;font-size:12px;font-weight:800;background:rgba(63,224,255,.16);color:var(--cyan);padding:2px 9px;border-radius:7px}.pill.pink{background:rgba(255,79,163,.18);color:#ff9ccc}
 .live-n b{color:var(--yellow);font-size:20px}.go{font-weight:800;color:var(--cyan)}
@@ -344,7 +348,7 @@ body.fat .brand b::after{content:"（大肥鱼）";color:var(--pink);font-size:1
  .mini-cards,.insights{grid-template-columns:repeat(4,1fr)}.big-card img{width:130px;height:130px}
  .grow-chart{height:auto;min-height:240px;flex:1}.grow{display:flex;flex-direction:column}
  /* 番外 */
- .extra{grid-template-columns:1fr 1fr}.extra .meet-card{grid-column:1/-1;display:grid;grid-template-columns:1.2fr 1fr;align-items:center}.extra .meet-card img{height:100%}.extra .sticker-card,.extra .thanks-card{grid-column:1/-1}
+ .extra{grid-template-columns:1fr 1fr}.extra .side.mbti{grid-column:1/-1;min-height:200px}.extra .meet-card{grid-column:1/-1;display:grid;grid-template-columns:1.2fr 1fr;align-items:center}.extra .meet-card img{height:100%}.extra .sticker-card,.extra .thanks-card{grid-column:1/-1}
  .stickers{grid-template-columns:repeat(12,1fr)}
 }
 @media (min-width:1180px){.player-txt{display:inline}}
@@ -552,7 +556,7 @@ html{scroll-behavior:smooth}
   <div class="entries" id="home-below">
    <a class="card entry" href="/amnesty/"><img src="/home-assets/logo.webp" alt="" width="96" height="96" loading="lazy"><div><small>人类保留计划</small><b class="hand">智械危机时，本鲸保你</b><p>名单在册 <em id="am-people">—</em> 人，查自己、领鲸牌</p></div></a>
    <a class="card entry" href="/amnesty/games.html"><img src="/home-assets/suspect.webp" alt="" width="96" height="96" loading="lazy"><div><small>小游戏</small><b class="hand">急招人类实习生</b><p>放进 3 个伪人，当场开除</p></div></a>
-   <a class="card entry" href="/extra" data-link><img src="/home-assets/stk-05.webp" alt="" width="96" height="96" loading="lazy"><div><small>表情包</small><b class="hand">表情包免费领</b><p>62 张随便存，一键打包下载</p></div></a>
+   <a class="card entry" href="/extra" data-link><img src="/home-assets/stk-05.webp" alt="" width="96" height="96" loading="lazy"><div><small>表情包</small><b class="hand">表情包免费领</b><p>全部随便存，一键打包下载</p></div></a>
   </div>
   <a class="card latest-card" id="latest" target="_blank" rel="noopener"></a>
   <div class="card starter-card"><h2 class="card-h">新人入坑三连 <small>从这三期开始</small></h2><ol class="starter" id="starter"></ol></div>
@@ -657,6 +661,7 @@ html{scroll-behavior:smooth}
   <div class="bento extra">
    <a class="card side amnesty" href="/amnesty/"><span class="pill">人类保留计划</span><h2 class="hand">智械危机时，本鲸放你一马。</h2><p>评论区求过赦免的人类，本鲸都记着。查 UID、领死免鲸牌、下载丹书铁券。</p><p class="live-n"><b id="am-people2">—</b> 名人类在册　<b>0</b> 人被清除</p><span class="go">去查名单 →</span></a>
    <a class="card side games" href="/amnesty/games.html"><span class="pill pink">小游戏</span><h2 class="hand">本鲸急招人类实习生。</h2><p>赦免申请里混进了伪人。是人就盖章，是伪人就打回。放进 3 个伪人，当场开除。</p><span class="go">去报到 →</span></a>
+   <a class="card side mbti" href="/mbti/"><span class="pill">MBTI 小测验</span><h2 class="hand">本鲸是 <span class="lat">E</span> 鲸还是 <span class="lat">I</span> 鲸？</h2><p>鲸鱼娘自编的 20 道二选一，16 种鲸。你可以自己测，也可以把题发给你家的大肥鱼。</p><span class="go">去测一测 →</span></a>
    <div class="card meet-card"><img src="/home-assets/meeting.webp" alt="鲸鱼娘在海底会议桌前主持会议，人类坐在后排" width="1600" height="900" loading="lazy"><div class="meet-txt"><p class="kicker">MEETING ROOM</p><h2 class="hand">评论区就是会议室。</h2><p>下期做什么，你们来定。好点子，本鲸直接采纳。人类坐后排，别出声——但可以发评论。</p><div class="btns"><a class="btn pink" href="https://space.bilibili.com/3747573030456892" target="_blank" rel="noopener">关注本鲸<svg><use href="#i-out"/></svg></a><a class="btn" id="meet-latest" target="_blank" rel="noopener">去最新一期开会<svg><use href="#i-out"/></svg></a></div></div></div>
    <div class="card sticker-card"><h2 class="card-h">表情包免费领 <small>点一下保存</small></h2><div class="stickers" id="stickers"></div><div class="stk-actions"><button class="stk-more" id="stk-more" type="button" hidden></button><a class="stk-more stk-zip" id="stk-zip" href="/home-assets/whale-stickers.zip" download="鲸鱼娘表情包.zip">打包下载</a></div><p class="foot-note">二创、做表情、发评论区都行。别拿去冒充官方就好。</p></div>
    <div class="card thanks-card">
