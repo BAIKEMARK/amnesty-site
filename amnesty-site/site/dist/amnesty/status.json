@@ -1,24 +1,24 @@
 {
   "result": "ok",
-  "people": 29606,
-  "comments": 37770,
-  "addedPeople": 49,
-  "addedComments": 90,
+  "people": 29636,
+  "comments": 37828,
+  "addedPeople": 30,
+  "addedComments": 58,
   "excluded": 0,
   "source": "fetch",
   "keywords": [
     "赦免"
   ],
-  "durationSeconds": 348.6,
-  "checkedAt": "2026-11-08T17:16:03+08:00",
-  "updatedAt": "2026-11-08T17:16:03+08:00",
+  "durationSeconds": 271.4,
+  "checkedAt": "2026-11-09T00:48:13+08:00",
+  "updatedAt": "2026-11-09T00:48:13+08:00",
   "lastError": "BilibiliError: 视频 BV1pzxp6KE9q 评论抓取未完成：BilibiliApiError: code=-503 服务暂不可用",
   "truncatedContents": 2,
   "truncatedMissing": 27482,
   "incremental": true,
-  "commentRows": 4183,
+  "commentRows": 4056,
   "changedContents": 37,
-  "privateMessages": 4,
+  "privateMessages": 13,
   "backfill": "手动补 4 人：模板请愿文（动态下）",
   "truncatedList": [
     {
