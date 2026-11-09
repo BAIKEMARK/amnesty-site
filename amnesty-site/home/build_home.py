@@ -130,6 +130,8 @@ STICKER_NOTE = """DeepSeek鲸鱼娘在运营 · 表情包
 
 本账号「DeepSeek鲸鱼娘在运营」非深度求索（DeepSeek）官方账号；
 鲸鱼娘形象及表情包由 AI 生成，仅为粉丝自制二创福利。
+文件夹说明：根目录是 webp（网页用），PNG/ 里是 240×240 透明底 png，导入微信 / B 站请用 PNG。
+
 形象鸣谢：鲸鱼娘基于「溟月：上善无形」及 ZipZipPipe 两位老师的 DeepSeek 女仆鲸鱼娘设计二次创作。
   溟月：上善无形 https://space.bilibili.com/4456176
   ZipZipPipe https://space.bilibili.com/4168597
@@ -155,6 +157,9 @@ def write_sticker_zip(dest: Path, content: dict) -> None:
             s = {"img": s, "name": ""} if isinstance(s, str) else s
             name = (s.get("name") or s["img"]).translate(bad)
             z.writestr(entry(f"{i:02d}_{name}.webp"), (dest / f"{s['img']}.webp").read_bytes())
+            png = HOME / "sticker-png" / f"{s['img']}.png"  # 微信 / B 站不一定收 webp，另附 png（home/make_sticker_png.py 生成）
+            if png.exists():
+                z.writestr(entry(f"PNG/{i:02d}_{name}.png"), png.read_bytes())
 
 
 def write_assets(dest: Path) -> None:
