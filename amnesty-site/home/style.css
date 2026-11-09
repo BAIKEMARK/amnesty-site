@@ -196,6 +196,46 @@ a.card{transition:border-color .2s,transform .2s}a.card:hover{border-color:rgba(
 .ep .line{margin:0;font-family:var(--hand);font-size:17px;line-height:1.4;color:#fff4c7}.ep .line::before{content:"「"}.ep .line::after{content:"」"}
 .ep .meta{margin-top:auto}
 
+/* 评论区点歌池 */
+.song-spotlight{display:flex;align-items:center;gap:22px;margin:0 0 16px;padding:20px 24px 20px 20px;border-color:rgba(63,224,255,.28);background:radial-gradient(520px 220px at 12% 50%,rgba(63,224,255,.16),transparent 70%),linear-gradient(110deg,rgba(16,24,72,.92),rgba(24,44,104,.78))}
+.song-hero-art{flex:none;width:150px;height:150px;border-radius:20px;object-fit:cover;border:3px solid rgba(255,255,255,.85);box-shadow:0 0 0 5px rgba(63,224,255,.18),0 12px 28px rgba(0,0,0,.35);transform:rotate(-3deg)}
+.song-spotlight-copy{flex:1;min-width:0}.song-note-label{display:inline-block;padding:2px 10px;border-radius:99px;background:rgba(255,210,63,.14);border:1px solid rgba(255,210,63,.35);color:var(--yellow);font-size:11.5px;font-weight:800;letter-spacing:.06em}
+.song-spotlight-copy h2{margin:8px 0 0;font-family:var(--hand);font-size:44px;font-weight:400;line-height:1.1;overflow-wrap:anywhere}.song-spotlight-copy h2 small{font:600 13px var(--font);color:var(--mute)}
+.song-spotlight-copy p{margin:8px 0 0;color:var(--mute);font-size:13.5px}.song-spotlight-copy p b{color:#fff;font-size:18px}
+.song-note-link{display:inline-block;margin-top:12px;padding:7px 14px;border:1px solid rgba(255,79,163,.4);border-radius:99px;background:rgba(255,79,163,.1);color:#ffc1df;text-decoration:none;font-size:12.5px;font-weight:700;transition:background .15s}
+.song-note-link:hover{background:rgba(255,79,163,.2)}
+.song-summary{display:flex;align-items:center;gap:26px;padding:10px 4px 14px}
+.song-summary div{display:flex;align-items:baseline;gap:6px}.song-summary b{font-size:26px;color:#fff;font-variant-numeric:tabular-nums}.song-summary span{font-size:12.5px;color:var(--mute)}
+.song-summary small{margin-left:auto;color:var(--mute);font-size:11px}
+.song-toolbar{display:grid;grid-template-columns:minmax(180px,1fr) auto auto;align-items:center;gap:12px;margin:2px 0 16px}
+.song-search{max-width:440px;width:100%}.song-toolbar .seg{flex:none}
+.song-filter-label{color:var(--mute);font-size:12px;white-space:nowrap}
+.song-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.song-card{position:relative;padding:14px 16px 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--card);overflow:hidden;transition:transform .18s,border-color .18s}
+.song-card:hover{transform:translateY(-3px);border-color:rgba(63,224,255,.4)}
+.song-badge{display:inline-block;min-width:34px;padding:1px 10px;border-radius:99px;border:1px solid var(--line);background:var(--card2);color:var(--mute);font:700 12px var(--num);text-align:center}
+.song-badge.top-1{border-color:rgba(255,210,63,.5);background:rgba(255,210,63,.12);color:var(--yellow)}.song-badge.top-2{border-color:rgba(200,215,255,.45);background:rgba(200,215,255,.1);color:#dfe8ff}.song-badge.top-3{border-color:rgba(255,150,90,.5);background:rgba(255,150,90,.1);color:#ffc29d}
+.song-badge.is-likes{border-color:rgba(255,79,163,.45);background:rgba(255,79,163,.1);color:#ffc1df;font-family:var(--font)}
+.song-stamp{position:absolute;right:12px;top:12px;padding:1px 9px;border:1.5px solid rgba(79,224,160,.7);border-radius:7px;color:var(--green);font-size:11.5px;font-weight:800;transform:rotate(6deg)}
+.song-card h2{margin:10px 0 0;font-family:var(--hand);font-size:26px;font-weight:400;line-height:1.2;overflow-wrap:anywhere}
+.song-ver{margin:2px 0 0;min-height:18px;color:var(--mute);font-size:12px}
+.song-num{display:flex;align-items:baseline;gap:6px;margin-top:8px}.song-num b{font:800 34px/1 var(--num);color:#fff;font-variant-numeric:tabular-nums}.song-num b i{font:600 13px var(--font);color:var(--mute);margin-right:3px}.song-num span{font-size:12.5px;color:#ffe8a1}
+.song-bar{height:6px;margin-top:9px;border-radius:99px;background:rgba(140,170,255,.14);overflow:hidden}.song-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--cyan),var(--blue))}
+.song-card.is-sung{border-color:rgba(79,224,160,.3)}.song-card.is-sung .song-bar i{background:linear-gradient(90deg,var(--green),var(--cyan))}
+.song-card.is-likes .song-bar i{background:linear-gradient(90deg,var(--pink),#ffb3d9)}.song-card.is-likes .song-num span{color:#ffc1df}
+.song-sources{margin-top:10px;color:var(--mute);font-size:11px;display:flex;flex-wrap:wrap;gap:3px 10px}
+.song-sources a{color:#9eeeff;text-decoration:none}.song-sources a:hover{text-decoration:underline}
+.song-empty{margin:14px 0 0;padding:22px;border:1px dashed var(--line);border-radius:12px;text-align:center;color:var(--mute)}
+.song-footnote{margin:14px 2px 0;color:var(--mute);font-size:11px;line-height:1.6}
+@media (max-width:599px){
+ .song-spotlight{flex-direction:column;align-items:flex-start;gap:14px;padding:16px}.song-hero-art{width:112px;height:112px}.song-spotlight-copy h2{font-size:34px}
+ .song-summary{gap:14px;padding:8px 2px 12px}.song-summary b{font-size:21px}.song-summary small{max-width:96px;text-align:right;line-height:1.35;font-size:10px}
+ .song-toolbar{grid-template-columns:minmax(0,1fr);gap:8px}.song-search{max-width:none}.song-filter-label{display:none}.song-toolbar .seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%}.song-toolbar .seg button{padding:0 4px;font-size:11.5px;white-space:nowrap}
+ .song-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.song-card{padding:12px 12px}.song-card h2{font-size:21px}.song-num b{font-size:27px}.song-stamp{right:8px;top:9px;font-size:10px}
+}
+@media (prefers-reduced-motion:reduce){.song-card{transition:none}}
+@media (min-width:900px) and (max-width:1150px){.nav a{padding:0 7px;font-size:13px}.nav{gap:0}}
+
 /* 梗百科 */
 .search{display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;border-radius:12px;background:var(--card2);border:1px solid var(--line);flex:1;min-width:200px;max-width:360px}
 .search input{border:0;background:none;outline:none;flex:1;min-width:0}.search svg{color:var(--mute)}

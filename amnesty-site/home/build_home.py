@@ -5,8 +5,8 @@
 
 产物：
   dist/index.html        主页（CSS / JS 内联，单页应用，7 个“页面”前端切换）
-  dist/{whale,day,log,memes,stats,extra}/index.html  同一份页面的路由副本（直接打开/刷新子页不 404）
-  dist/home-data.js      角色设定(content.json) + B 站数据 + 增长曲线 + 名单人数
+  dist/{whale,day,log,memes,songs,stats,extra}/index.html  同一份页面的路由副本（直接打开/刷新子页不 404）
+  dist/home-data.js      角色设定(content.json) + B 站数据 + 增长曲线 + 名单人数 + 点歌池
   dist/home-assets/hand.woff  手写字体：从 fonts/MaShanZheng-Regular.ttf 按页面实际用字子集化
   浏览器打开后还会轮询 /api/bili（Cloudflare Pages Function）拿实时数字
   dist/home-assets/*     图片与字体
@@ -37,7 +37,7 @@ PACK = HOME / "assets.pack.json"
 FONT = HOME / "fonts" / "MaShanZheng-Regular.ttf"
 OLD_FONT = SITE / "assets" / "fonts" / "WhaleDecree.woff"
 MBTI = HOME.parent / "mbti"  # MBTI 小测验的 16 张结果图，也并入表情包
-ROUTES = ["whale", "day", "log", "memes", "stats", "extra"]
+ROUTES = ["whale", "day", "log", "memes", "songs", "stats", "extra"]
 
 
 def mbti_stickers() -> list[dict]:
@@ -64,6 +64,7 @@ def build(out: Path | str = DIST) -> Path:
     out = Path(out)
     bili = json.loads((HOME / "bili.json").read_text(encoding="utf-8"))
     content = json.loads((HOME / "content.json").read_text(encoding="utf-8"))
+    song_requests = json.loads((HOME / "song_requests.json").read_text(encoding="utf-8"))
     content["stickers"] = list(content.get("stickers", [])) + mbti_stickers()
     css = (HOME / "style.css").read_text(encoding="utf-8")
     js = (HOME / "app.js").read_text(encoding="utf-8")
@@ -84,7 +85,13 @@ def build(out: Path | str = DIST) -> Path:
 
     hist_path = HOME / "history.json"
     history = json.loads(hist_path.read_text(encoding="utf-8")) if hist_path.exists() else []
-    payload = {"content": content, "bili": bili, "history": history, "amnesty": amnesty_counts()}
+    payload = {
+        "content": content,
+        "bili": bili,
+        "history": history,
+        "amnesty": amnesty_counts(),
+        "songRequests": song_requests,
+    }
     text = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
     (out / "home-data.js").write_text("window.__HOME__=" + text + ";", encoding="utf-8")
 
@@ -94,7 +101,12 @@ def build(out: Path | str = DIST) -> Path:
     assets.mkdir(parents=True)
     write_assets(assets)
     write_sticker_zip(assets, content)
-    write_font(assets / "hand.woff", tpl + js + json.dumps(content, ensure_ascii=False) + json.dumps(bili, ensure_ascii=False))
+    write_font(
+        assets / "hand.woff",
+        tpl + js + json.dumps(content, ensure_ascii=False)
+        + json.dumps(bili, ensure_ascii=False)
+        + json.dumps(song_requests, ensure_ascii=False),
+    )
     return out
 
 

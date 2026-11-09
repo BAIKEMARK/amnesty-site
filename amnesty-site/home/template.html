@@ -39,6 +39,7 @@
 <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
 <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="5" rx="1"/><path d="M5 13v8h14v-8M12 8v13M12 8S10.5 3 8 4s0 4 4 4zm0 0s1.5-5 4-4 0 4-4 4z"/></symbol>
 <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+<symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
 <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></symbol>
 </defs></svg>
 
@@ -48,7 +49,7 @@
   <span><b>鲸鱼娘在运营</b><small><i class="dot"></i><span id="bar-status">深海营业中</span></small></span>
  </a>
  <nav class="nav" aria-label="页面">
-  <a href="/" data-link>营业厅</a><a href="/whale" data-link>档案</a><a href="/day" data-link>一天</a><a href="/log" data-link>日志</a><a href="/memes" data-link>梗百科</a><a href="/stats" data-link>数据</a><a href="/extra" data-link>番外</a>
+  <a href="/" data-link>营业厅</a><a href="/whale" data-link>档案</a><a href="/day" data-link>一天</a><a href="/log" data-link>日志</a><a href="/memes" data-link>梗百科</a><a href="/songs" data-link>点歌池</a><a href="/stats" data-link>数据</a><a href="/extra" data-link>番外</a>
  </nav>
  <div class="bar-right">
   <button class="player" id="player" type="button" aria-pressed="false" aria-label="播放鲸歌电台" title="鲸歌电台">
@@ -181,6 +182,28 @@
  </div>
 </section>
 
+<!-- ========== 点歌池 ========== -->
+<section class="page" data-route="/songs" data-title="点歌留言簿 · 鲸鱼娘在运营" aria-label="评论区点歌池" hidden>
+ <div class="wrap">
+  <header class="page-head"><p class="kicker">DEEP SEA JUKEBOX · 评论区点歌池</p><h1 class="hand">点歌留言簿</h1><p class="sub">你们负责点，本鲸负责记。点名最多的，优先送进练歌房。</p></header>
+  <section class="song-spotlight card" id="song-spotlight" aria-live="polite" aria-label="练歌房便签"></section>
+  <div class="song-summary" aria-label="点歌池统计">
+   <div><b id="song-total">0</b><span>首歌收妥</span></div>
+   <div><b id="song-pending">0</b><span>排队中</span></div>
+   <div><b id="song-done">0</b><span>交过作业</span></div>
+   <small id="song-updated"></small>
+  </div>
+  <div class="song-toolbar">
+   <label class="search song-search"><svg aria-hidden="true"><use href="#i-search"/></svg><input id="song-search" type="search" placeholder="搜歌名或版本" autocomplete="off" maxlength="80" aria-label="搜索点歌"></label>
+   <div class="song-filter-label">翻翻小本本 <span aria-hidden="true">↓</span></div>
+   <div class="seg" role="tablist" aria-label="点歌状态" id="song-filters"><button role="tab" aria-selected="true" data-filter="all">全部</button><button role="tab" aria-selected="false" data-filter="pending">排队中</button><button role="tab" aria-selected="false" data-filter="sung">交过作业</button></div>
+  </div>
+  <ol class="song-grid" id="song-list" aria-live="polite"></ol>
+  <p class="song-empty" id="song-empty" hidden>本鲸翻遍小本本了，也没找到这首。换个关键词试试？</p>
+  <p class="song-footnote">同一用户点同一首只算一次；按点歌人数排队，点赞单独标出。旧记录有些只留了约数。评论者信息不公开。</p>
+ </div>
+</section>
+
 <!-- ========== 番外 ========== -->
 <section class="page" data-route="/extra" data-title="番外 · 鲸鱼娘在运营" aria-label="番外" hidden>
  <div class="wrap">
@@ -227,6 +250,7 @@
 <div class="sheet" id="more" hidden>
  <div class="sheet-card" role="dialog" aria-label="更多页面">
   <a href="/day" data-link><svg><use href="#i-clock"/></svg><b>鲸鱼娘的一天</b><span>现在她在干嘛</span></a>
+  <a href="/songs" data-link><svg><use href="#i-music"/></svg><b>评论区点歌池</b><span>大家想听的下一首</span></a>
   <a href="/stats" data-link><svg><use href="#i-chart"/></svg><b>数据</b><span>实时播放、涨粉曲线</span></a>
   <a href="/extra" data-link><svg><use href="#i-gift"/></svg><b>番外</b><span>人类保留计划、小游戏、表情包</span></a>
  </div>
