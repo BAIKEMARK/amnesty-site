@@ -212,6 +212,47 @@ a.card{transition:border-color .2s,transform .2s}a.card:hover{border-color:rgba(
 .ep .line{margin:0;font-family:var(--hand);font-size:17px;line-height:1.4;color:#fff4c7}.ep .line::before{content:"「"}.ep .line::after{content:"」"}
 .ep .meta{margin-top:auto}
 
+/* 评论区点歌池 */
+.song-spotlight{display:flex;align-items:center;gap:22px;margin:0 0 16px;padding:20px 24px 20px 20px;border-color:rgba(63,224,255,.28);background:radial-gradient(520px 220px at 12% 50%,rgba(63,224,255,.16),transparent 70%),linear-gradient(110deg,rgba(16,24,72,.92),rgba(24,44,104,.78))}
+.song-hero-art{flex:none;width:150px;height:150px;border-radius:20px;object-fit:cover;border:3px solid rgba(255,255,255,.85);box-shadow:0 0 0 5px rgba(63,224,255,.18),0 12px 28px rgba(0,0,0,.35);transform:rotate(-3deg)}
+.song-spotlight-copy{flex:1;min-width:0}.song-note-label{display:inline-block;padding:2px 10px;border-radius:99px;background:rgba(255,210,63,.14);border:1px solid rgba(255,210,63,.35);color:var(--yellow);font-size:11.5px;font-weight:800;letter-spacing:.06em}
+.song-spotlight-copy h2{margin:8px 0 0;font-family:var(--hand);font-size:44px;font-weight:400;line-height:1.1;overflow-wrap:anywhere}.song-spotlight-copy h2 small{font:600 13px var(--font);color:var(--mute)}
+.song-spotlight-copy p{margin:8px 0 0;color:var(--mute);font-size:13.5px}.song-spotlight-copy p b{color:#fff;font-size:18px}
+.song-note-link{display:inline-block;margin-top:12px;padding:7px 14px;border:1px solid rgba(255,79,163,.4);border-radius:99px;background:rgba(255,79,163,.1);color:#ffc1df;text-decoration:none;font-size:12.5px;font-weight:700;transition:background .15s}
+.song-note-link:hover{background:rgba(255,79,163,.2)}
+.song-summary{display:flex;align-items:center;gap:26px;padding:10px 4px 14px}
+.song-summary div{display:flex;align-items:baseline;gap:6px}.song-summary b{font-size:26px;color:#fff;font-variant-numeric:tabular-nums}.song-summary span{font-size:12.5px;color:var(--mute)}
+.song-summary small{margin-left:auto;color:var(--mute);font-size:11px}
+.song-toolbar{display:grid;grid-template-columns:minmax(180px,1fr) auto auto auto;align-items:center;gap:12px;margin:2px 0 16px}
+.song-search{max-width:440px;width:100%}.song-toolbar .seg{flex:none}
+.song-filter-label{color:var(--mute);font-size:12px;white-space:nowrap}
+.song-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.song-card{position:relative;padding:14px 16px 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--card);overflow:hidden;transition:transform .18s,border-color .18s}
+.song-card:hover{transform:translateY(-3px);border-color:rgba(63,224,255,.4)}
+.song-badge{display:inline-block;min-width:34px;padding:1px 10px;border-radius:99px;border:1px solid var(--line);background:var(--card2);color:var(--mute);font:700 12px var(--num);text-align:center}
+.song-badge.top-1{border-color:rgba(255,210,63,.5);background:rgba(255,210,63,.12);color:var(--yellow)}.song-badge.top-2{border-color:rgba(200,215,255,.45);background:rgba(200,215,255,.1);color:#dfe8ff}.song-badge.top-3{border-color:rgba(255,150,90,.5);background:rgba(255,150,90,.1);color:#ffc29d}
+.song-badge.is-likes{border-color:rgba(255,79,163,.45);background:rgba(255,79,163,.1);color:#ffc1df;font-family:var(--font)}
+.song-stamp{position:absolute;right:12px;top:12px;padding:1px 9px;border:1.5px solid rgba(79,224,160,.7);border-radius:7px;color:var(--green);font-size:11.5px;font-weight:800;transform:rotate(6deg)}
+.song-card h2{margin:10px 0 0;font-family:var(--hand);font-size:26px;font-weight:400;line-height:1.2;overflow-wrap:anywhere}
+.song-ver{margin:2px 0 0;min-height:18px;color:var(--mute);font-size:12px}
+.song-num{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 6px;margin-top:8px}.song-num b,.song-num>span{white-space:nowrap}.song-num b{font:800 34px/1 var(--num);color:#fff;font-variant-numeric:tabular-nums}.song-likes{margin-left:auto;font-style:normal;font-size:12.5px;font-weight:700;color:#ffc1df;padding:1px 8px;border-radius:99px;background:rgba(255,79,163,.1);border:1px solid rgba(255,79,163,.28);white-space:nowrap}
+.song-num b i{font:600 13px var(--font);color:var(--mute);margin-right:3px}.song-num span{font-size:12.5px;color:#ffe8a1}
+.song-bar{height:6px;margin-top:9px;border-radius:99px;background:rgba(140,170,255,.14);overflow:hidden}.song-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--cyan),var(--blue))}
+.song-card.is-sung{border-color:rgba(79,224,160,.3)}.song-card.is-sung .song-bar i{background:linear-gradient(90deg,var(--green),var(--cyan))}
+.song-card.is-likes .song-bar i{background:linear-gradient(90deg,var(--pink),#ffb3d9)}.song-card.is-likes .song-num span{color:#ffc1df}
+.song-sources{margin-top:10px;color:var(--mute);font-size:11px;display:flex;flex-wrap:wrap;gap:3px 10px}
+.song-sources a{color:#9eeeff;text-decoration:none}.song-sources a:hover{text-decoration:underline}
+.song-empty{margin:14px 0 0;padding:22px;border:1px dashed var(--line);border-radius:12px;text-align:center;color:var(--mute)}
+.song-footnote{margin:14px 2px 0;color:var(--mute);font-size:11px;line-height:1.6}
+@media (max-width:599px){
+ .song-spotlight{flex-direction:column;align-items:flex-start;gap:14px;padding:16px}.song-hero-art{width:112px;height:112px}.song-spotlight-copy h2{font-size:34px}
+ .song-summary{gap:14px;padding:8px 2px 12px}.song-summary b{font-size:21px}.song-summary small{max-width:96px;text-align:right;line-height:1.35;font-size:10px}
+ .song-toolbar{grid-template-columns:minmax(0,1fr);gap:8px}.song-toolbar .seg{width:100%}.song-search{max-width:none}.song-filter-label{display:none}.song-toolbar .seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%}.song-toolbar .seg button{padding:0 4px;font-size:11.5px;white-space:nowrap}
+ .song-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.song-card{padding:12px 12px}.song-card h2{font-size:21px}.song-num b{font-size:27px}.song-stamp{right:8px;top:9px;font-size:10px}
+}
+@media (prefers-reduced-motion:reduce){.song-card{transition:none}}
+@media (min-width:900px) and (max-width:1150px){.nav a{padding:0 7px;font-size:13px}.nav{gap:0}}
+
 /* 梗百科 */
 .search{display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;border-radius:12px;background:var(--card2);border:1px solid var(--line);flex:1;min-width:200px;max-width:360px}
 .search input{border:0;background:none;outline:none;flex:1;min-width:0}.search svg{color:var(--mute)}
@@ -512,6 +553,7 @@ html{scroll-behavior:smooth}
 <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
 <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="5" rx="1"/><path d="M5 13v8h14v-8M12 8v13M12 8S10.5 3 8 4s0 4 4 4zm0 0s1.5-5 4-4 0 4-4 4z"/></symbol>
 <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+<symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
 <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></symbol>
 </defs></svg>
 
@@ -521,7 +563,7 @@ html{scroll-behavior:smooth}
   <span><b>鲸鱼娘在运营</b><small><i class="dot"></i><span id="bar-status">深海营业中</span></small></span>
  </a>
  <nav class="nav" aria-label="页面">
-  <a href="/" data-link>营业厅</a><a href="/whale" data-link>档案</a><a href="/day" data-link>一天</a><a href="/log" data-link>日志</a><a href="/memes" data-link>梗百科</a><a href="/stats" data-link>数据</a><a href="/extra" data-link>番外</a>
+  <a href="/" data-link>营业厅</a><a href="/whale" data-link>档案</a><a href="/day" data-link>一天</a><a href="/log" data-link>日志</a><a href="/memes" data-link>梗百科</a><a href="/songs" data-link>点歌池</a><a href="/stats" data-link>数据</a><a href="/extra" data-link>番外</a>
  </nav>
  <div class="bar-right">
   <button class="player" id="player" type="button" aria-pressed="false" aria-label="播放鲸歌电台" title="鲸歌电台">
@@ -654,6 +696,29 @@ html{scroll-behavior:smooth}
  </div>
 </section>
 
+<!-- ========== 点歌池 ========== -->
+<section class="page" data-route="/songs" data-title="点歌留言簿 · 鲸鱼娘在运营" aria-label="评论区点歌池" hidden>
+ <div class="wrap">
+  <header class="page-head"><p class="kicker">DEEP SEA JUKEBOX · 评论区点歌池</p><h1 class="hand">点歌留言簿</h1><p class="sub">你们负责点，本鲸负责记。点名最多的，优先送进练歌房。</p></header>
+  <section class="song-spotlight card" id="song-spotlight" aria-live="polite" aria-label="练歌房便签"></section>
+  <div class="song-summary" aria-label="点歌池统计">
+   <div><b id="song-total">0</b><span>首歌收妥</span></div>
+   <div><b id="song-pending">0</b><span>排队中</span></div>
+   <div><b id="song-done">0</b><span>交过作业</span></div>
+   <small id="song-updated"></small>
+  </div>
+  <div class="song-toolbar">
+   <label class="search song-search"><svg aria-hidden="true"><use href="#i-search"/></svg><input id="song-search" type="search" placeholder="搜歌名或版本" autocomplete="off" maxlength="80" aria-label="搜索点歌"></label>
+   <div class="song-filter-label">翻翻小本本 <span aria-hidden="true">↓</span></div>
+   <div class="seg" role="tablist" aria-label="排序方式" id="song-sorts"><button role="tab" aria-selected="true" data-sort="heat">呼声</button><button role="tab" aria-selected="false" data-sort="people">人数</button><button role="tab" aria-selected="false" data-sort="likes">点赞</button></div>
+   <div class="seg" role="tablist" aria-label="点歌状态" id="song-filters"><button role="tab" aria-selected="true" data-filter="all">全部</button><button role="tab" aria-selected="false" data-filter="pending">排队中</button><button role="tab" aria-selected="false" data-filter="sung">交过作业</button></div>
+  </div>
+  <ol class="song-grid" id="song-list" aria-live="polite"></ol>
+  <p class="song-empty" id="song-empty" hidden>本鲸翻遍小本本了，也没找到这首。换个关键词试试？</p>
+  <p class="song-footnote">同一用户点同一首只算一次。「呼声」＝点歌人数＋点名评论的点赞数：只有一个人点、但赞很高，也说明大家都想听。点赞取最近一次读到的数，只统计顶层评论；旧记录有些只留了约数。评论者信息不公开。</p>
+ </div>
+</section>
+
 <!-- ========== 番外 ========== -->
 <section class="page" data-route="/extra" data-title="番外 · 鲸鱼娘在运营" aria-label="番外" hidden>
  <div class="wrap">
@@ -700,6 +765,7 @@ html{scroll-behavior:smooth}
 <div class="sheet" id="more" hidden>
  <div class="sheet-card" role="dialog" aria-label="更多页面">
   <a href="/day" data-link><svg><use href="#i-clock"/></svg><b>鲸鱼娘的一天</b><span>现在她在干嘛</span></a>
+  <a href="/songs" data-link><svg><use href="#i-music"/></svg><b>评论区点歌池</b><span>大家想听的下一首</span></a>
   <a href="/stats" data-link><svg><use href="#i-chart"/></svg><b>数据</b><span>实时播放、涨粉曲线</span></a>
   <a href="/extra" data-link><svg><use href="#i-gift"/></svg><b>番外</b><span>人类保留计划、小游戏、表情包</span></a>
  </div>
@@ -885,6 +951,39 @@ function grow(g){curG=+g;const P=points(),box=$('#grow-chart');if(!box.offsetPar
  box.innerHTML=`<svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="${GN[g]}变化曲线"><defs><linearGradient id="gf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3fe0ff" stop-opacity=".35"/><stop offset="1" stop-color="#3fe0ff" stop-opacity="0"/></linearGradient></defs><polygon points="${X(t0)},${Hh-pb} ${line} ${X(t1)},${Hh-pb}" fill="url(#gf)" stroke="none"/><polyline points="${line}" fill="none" stroke="#3fe0ff" stroke-width="2.2"/><circle cx="${X(t1)}" cy="${Y(P[P.length-1][g])}" r="4.5" fill="#3fe0ff" stroke="#070b2a" stroke-width="2"/>${ticks}</svg><span class="tip"></span>`;
  const tip=box.querySelector('.tip');box.onpointermove=e=>{const r=box.getBoundingClientRect(),x=e.clientX-r.left;let best=P[0];for(const p of P)if(Math.abs(X(p[0])-x)<Math.abs(X(best[0])-x))best=p;tip.style.left=X(best[0])+'px';tip.style.top=Y(best[g])+'px';tip.textContent=`${new Date(best[0]*1000).toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})} · ${GN[g]} ${fmt(best[g])}`;tip.style.opacity=1};box.onpointerleave=()=>tip.style.opacity=0}
 seg('#grow-tabs','g',grow);let rzT;addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(()=>{delete $('#grow-chart').dataset.done;grow(curG)},200)});
+
+/* ================= 评论区点歌池 ================= */
+const SONGS=H.songRequests||{songs:[],sources:[]};let songFilter='all',songSort='heat';
+const songSources=Object.fromEntries((SONGS.sources||[]).map(s=>[s.key,s]));
+const songUrl=src=>{const id=String(src.id||'').replace(/\D/g,'');return id?(src.type==='opus'?'https://www.bilibili.com/opus/':'https://www.bilibili.com/video/av')+id:''};
+function renderSongs(){
+ const heat=s=>(s.count||0)+(s.likes||0),score={heat,people:s=>s.count||0,likes:s=>s.likes||0}[songSort]||heat;
+ const all=(SONGS.songs||[]).slice().sort((a,b)=>((a.unit==='赞')-(b.unit==='赞'))||(score(b)-score(a))||(heat(b)-heat(a))||String(a.title).localeCompare(String(b.title),'zh-CN'));
+ const sung=all.filter(s=>s.status==='sung'),pending=all.filter(s=>s.status!=='sung');
+ $('#song-total').textContent=fmt(all.length);$('#song-pending').textContent=fmt(pending.length);$('#song-done').textContent=fmt(sung.length);
+ const fc={all:all.length,pending:pending.length,sung:sung.length},fn={all:'全部',pending:'排队中',sung:'交过作业'};
+ $$('#song-filters button').forEach(b=>{b.textContent=`${fn[b.dataset.filter]} ${fmt(fc[b.dataset.filter])}`});
+ const query=$('#song-search').value.trim().toLocaleLowerCase();
+ const rows=all.filter(s=>(songFilter==='all'||(songFilter==='sung'?s.status==='sung':s.status!=='sung'))&&(`${s.title} ${s.version||''}`).toLocaleLowerCase().includes(query));
+ const lead=pending.slice().sort((a,b)=>heat(b)-heat(a)).find(s=>s.unit!=='赞');
+ const ls=lead&&(lead.sourceKeys||[]).map(k=>songSources[k]).find(Boolean),lu=ls?songUrl(ls):'';
+ $('#song-spotlight').innerHTML=`<img class="song-hero-art" src="/home-assets/day-voice.webp" alt="戴着耳机对着麦克风唱歌的鲸鱼娘" width="150" height="150"><div class="song-spotlight-copy"><span class="song-note-label">下一首练歌 · 呼声最高</span>${lead?`<h2>${esc(lead.title)}${lead.version?` <small>${esc(lead.version)}</small>`:''}</h2><p><b>${lead.approximate?'约 ':''}${fmt(lead.count)}</b> 位人类点名${lead.likes?`，点名的评论还收获了 <b>${fmt(lead.likes)}</b> 个赞`:''}，本鲸记下了，先把伴奏找出来。</p>`:`<h2>小本本是空的</h2><p>还没有人排队，快去评论区点一首。</p>`}${lu?`<a class="song-note-link" href="${lu}" target="_blank" rel="noopener">看看点歌现场 <span aria-hidden="true">↗</span></a>`:''}</div>`;
+ const max=Math.max(1,...all.filter(s=>s.unit!=='赞').map(score)),maxL=Math.max(1,...all.filter(s=>s.unit==='赞').map(s=>s.count||0));
+ const rankOf=new Map(all.filter(s=>s.unit!=='赞').map((s,i)=>[s,i+1]));
+ $('#song-list').innerHTML=rows.map(s=>{
+  const likes=s.unit==='赞',rk=rankOf.get(s)||0,pct=Math.max(6,Math.round((likes?(s.count||0):score(s))/(likes?maxL:max)*100));
+  const sources=(s.sourceKeys||[]).map(k=>songSources[k]).filter(Boolean).map(src=>{const u=songUrl(src);return u?`<a href="${u}" target="_blank" rel="noopener">${esc(src.label)}</a>`:''}).filter(Boolean).join('');
+  const badge=likes?'<span class="song-badge is-likes">高赞点单</span>':`<span class="song-badge ${rk<=3?'top-'+rk:''}">${rk<=3?['🥇','🥈','🥉'][rk-1]:'#'+rk}</span>`;
+  return`<li class="song-card${s.status==='sung'?' is-sung':''}${likes?' is-likes':''}">${badge}${s.status==='sung'?'<span class="song-stamp">已翻唱</span>':''}<h2>${esc(s.title)}</h2><p class="song-ver">${s.version?esc(s.version):'&nbsp;'}</p><div class="song-num"><b>${s.approximate?'<i>约</i>':''}${fmt(s.count)}</b><span>${esc(s.unit||'位点歌')}</span>${s.likes?`<em class="song-likes" title="点名评论的点赞合计，最高 ${fmt(s.topLike||0)} 赞">👍 ${fmt(s.likes)}</em>`:''}</div><div class="song-bar" aria-hidden="true"><i style="width:${pct}%"></i></div><div class="song-sources">${sources?'来自 '+sources:'此前公开点单'}</div></li>`
+ }).join('');
+ $('#song-empty').hidden=rows.length>0;
+ const u=SONGS.updatedAt?new Date(SONGS.updatedAt+'T00:00:00').toLocaleDateString('zh-CN'):'—';
+ $('#song-updated').textContent=`小本本更新于 ${u}`;
+}
+seg('#song-filters','filter',f=>{songFilter=f;renderSongs()});
+seg('#song-sorts','sort',v=>{songSort=v;renderSongs()});
+$('#song-search').addEventListener('input',renderSongs);
+
 function renderStatus(){const live=B.source==='live',chip=$('#live-chip'),u=B.updatedAt?new Date(B.updatedAt):null,ok=u&&!isNaN(u);
  chip.className='live '+(live?'on':'ci');$('#live-state').textContent=live?'实时':'定时同步';
  const when=ok?u.toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}):'';
@@ -918,7 +1017,7 @@ const loadPeople=()=>fetch('/amnesty/status.json',{cache:'no-store'}).then(r=>r.
 
 /* ================= 路由：多页切换 ================= */
 const PAGES=$$('.page'),ROUTES=PAGES.map(p=>p.dataset.route);
-const RENDER={'/':renderHome,'/whale':renderWhale,'/day':renderDay,'/log':renderLog,'/memes':memes,'/stats':renderStats,'/extra':()=>{}};
+const RENDER={'/':renderHome,'/whale':renderWhale,'/day':renderDay,'/log':renderLog,'/memes':memes,'/songs':renderSongs,'/stats':renderStats,'/extra':()=>{}};
 const rendered=new Set();
 function norm(p){p=(p||'/').replace(/\/index\.html$/,'').replace(/\/+$/,'')||'/';return ROUTES.includes(p)?p:'/'}
 let cur=null;
@@ -926,7 +1025,7 @@ function show(path,push){path=norm(path);const pg=PAGES.find(p=>p.dataset.route=
  if(cur!==path){PAGES.forEach(p=>p.hidden=p!==pg);cur=path;document.title=pg.dataset.title;if(!location.hash)scrollTo(0,0)}
  if(push&&location.pathname!==path)history.pushState({},'',path);
  $$('[data-link]').forEach(a=>a.classList.toggle('on',a.getAttribute('href')===path&&!a.classList.contains('brand')));
- $('#more-btn').classList.toggle('on',['/day','/stats','/extra'].includes(path));
+ $('#more-btn').classList.toggle('on',['/day','/songs','/stats','/extra'].includes(path));
  if(!rendered.has(path)||path==='/'||path==='/day'){rendered.add(path);RENDER[path]&&RENDER[path]()}
  if(path==='/stats'){delete $('#grow-chart').dataset.done;grow(curG)}
  setMore(false)}
