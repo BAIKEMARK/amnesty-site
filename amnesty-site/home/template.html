@@ -196,11 +196,12 @@
   <div class="song-toolbar">
    <label class="search song-search"><svg aria-hidden="true"><use href="#i-search"/></svg><input id="song-search" type="search" placeholder="搜歌名或版本" autocomplete="off" maxlength="80" aria-label="搜索点歌"></label>
    <div class="song-filter-label">翻翻小本本 <span aria-hidden="true">↓</span></div>
+   <div class="seg" role="tablist" aria-label="排序方式" id="song-sorts"><button role="tab" aria-selected="true" data-sort="heat">呼声</button><button role="tab" aria-selected="false" data-sort="people">人数</button><button role="tab" aria-selected="false" data-sort="likes">点赞</button></div>
    <div class="seg" role="tablist" aria-label="点歌状态" id="song-filters"><button role="tab" aria-selected="true" data-filter="all">全部</button><button role="tab" aria-selected="false" data-filter="pending">排队中</button><button role="tab" aria-selected="false" data-filter="sung">交过作业</button></div>
   </div>
   <ol class="song-grid" id="song-list" aria-live="polite"></ol>
   <p class="song-empty" id="song-empty" hidden>本鲸翻遍小本本了，也没找到这首。换个关键词试试？</p>
-  <p class="song-footnote">同一用户点同一首只算一次；按点歌人数排队，点赞单独标出。旧记录有些只留了约数。评论者信息不公开。</p>
+  <p class="song-footnote">同一用户点同一首只算一次。「呼声」＝点歌人数＋点名评论的点赞数：只有一个人点、但赞很高，也说明大家都想听。点赞取最近一次读到的数，只统计顶层评论；旧记录有些只留了约数。评论者信息不公开。</p>
  </div>
 </section>
 

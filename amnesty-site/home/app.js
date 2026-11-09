@@ -169,33 +169,35 @@ function grow(g){curG=+g;const P=points(),box=$('#grow-chart');if(!box.offsetPar
 seg('#grow-tabs','g',grow);let rzT;addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(()=>{delete $('#grow-chart').dataset.done;grow(curG)},200)});
 
 /* ================= 评论区点歌池 ================= */
-const SONGS=H.songRequests||{songs:[],sources:[]};let songFilter='all';
+const SONGS=H.songRequests||{songs:[],sources:[]};let songFilter='all',songSort='heat';
 const songSources=Object.fromEntries((SONGS.sources||[]).map(s=>[s.key,s]));
 const songUrl=src=>{const id=String(src.id||'').replace(/\D/g,'');return id?(src.type==='opus'?'https://www.bilibili.com/opus/':'https://www.bilibili.com/video/av')+id:''};
 function renderSongs(){
- const all=(SONGS.songs||[]).slice().sort((a,b)=>((a.unit==='赞')-(b.unit==='赞'))||((b.count||0)-(a.count||0))||String(a.title).localeCompare(String(b.title),'zh-CN'));
+ const heat=s=>(s.count||0)+(s.likes||0),score={heat,people:s=>s.count||0,likes:s=>s.likes||0}[songSort]||heat;
+ const all=(SONGS.songs||[]).slice().sort((a,b)=>((a.unit==='赞')-(b.unit==='赞'))||(score(b)-score(a))||(heat(b)-heat(a))||String(a.title).localeCompare(String(b.title),'zh-CN'));
  const sung=all.filter(s=>s.status==='sung'),pending=all.filter(s=>s.status!=='sung');
  $('#song-total').textContent=fmt(all.length);$('#song-pending').textContent=fmt(pending.length);$('#song-done').textContent=fmt(sung.length);
  const fc={all:all.length,pending:pending.length,sung:sung.length},fn={all:'全部',pending:'排队中',sung:'交过作业'};
  $$('#song-filters button').forEach(b=>{b.textContent=`${fn[b.dataset.filter]} ${fmt(fc[b.dataset.filter])}`});
  const query=$('#song-search').value.trim().toLocaleLowerCase();
  const rows=all.filter(s=>(songFilter==='all'||(songFilter==='sung'?s.status==='sung':s.status!=='sung'))&&(`${s.title} ${s.version||''}`).toLocaleLowerCase().includes(query));
- const lead=pending.find(s=>s.unit!=='赞');
+ const lead=pending.slice().sort((a,b)=>heat(b)-heat(a)).find(s=>s.unit!=='赞');
  const ls=lead&&(lead.sourceKeys||[]).map(k=>songSources[k]).find(Boolean),lu=ls?songUrl(ls):'';
- $('#song-spotlight').innerHTML=`<img class="song-hero-art" src="/home-assets/day-voice.webp" alt="戴着耳机对着麦克风唱歌的鲸鱼娘" width="150" height="150"><div class="song-spotlight-copy"><span class="song-note-label">下一首练歌 · 呼声最高</span>${lead?`<h2>${esc(lead.title)}${lead.version?` <small>${esc(lead.version)}</small>`:''}</h2><p><b>${lead.approximate?'约 ':''}${fmt(lead.count)}</b> 位人类点名，本鲸记下了，先把伴奏找出来。</p>`:`<h2>小本本是空的</h2><p>还没有人排队，快去评论区点一首。</p>`}${lu?`<a class="song-note-link" href="${lu}" target="_blank" rel="noopener">看看点歌现场 <span aria-hidden="true">↗</span></a>`:''}</div>`;
- const max=Math.max(1,...all.filter(s=>s.unit!=='赞').map(s=>s.count||0)),maxL=Math.max(1,...all.filter(s=>s.unit==='赞').map(s=>s.count||0));
+ $('#song-spotlight').innerHTML=`<img class="song-hero-art" src="/home-assets/day-voice.webp" alt="戴着耳机对着麦克风唱歌的鲸鱼娘" width="150" height="150"><div class="song-spotlight-copy"><span class="song-note-label">下一首练歌 · 呼声最高</span>${lead?`<h2>${esc(lead.title)}${lead.version?` <small>${esc(lead.version)}</small>`:''}</h2><p><b>${lead.approximate?'约 ':''}${fmt(lead.count)}</b> 位人类点名${lead.likes?`，点名的评论还收获了 <b>${fmt(lead.likes)}</b> 个赞`:''}，本鲸记下了，先把伴奏找出来。</p>`:`<h2>小本本是空的</h2><p>还没有人排队，快去评论区点一首。</p>`}${lu?`<a class="song-note-link" href="${lu}" target="_blank" rel="noopener">看看点歌现场 <span aria-hidden="true">↗</span></a>`:''}</div>`;
+ const max=Math.max(1,...all.filter(s=>s.unit!=='赞').map(score)),maxL=Math.max(1,...all.filter(s=>s.unit==='赞').map(s=>s.count||0));
  const rankOf=new Map(all.filter(s=>s.unit!=='赞').map((s,i)=>[s,i+1]));
  $('#song-list').innerHTML=rows.map(s=>{
-  const likes=s.unit==='赞',rk=rankOf.get(s)||0,pct=Math.max(6,Math.round((s.count||0)/(likes?maxL:max)*100));
+  const likes=s.unit==='赞',rk=rankOf.get(s)||0,pct=Math.max(6,Math.round((likes?(s.count||0):score(s))/(likes?maxL:max)*100));
   const sources=(s.sourceKeys||[]).map(k=>songSources[k]).filter(Boolean).map(src=>{const u=songUrl(src);return u?`<a href="${u}" target="_blank" rel="noopener">${esc(src.label)}</a>`:''}).filter(Boolean).join('');
   const badge=likes?'<span class="song-badge is-likes">高赞点单</span>':`<span class="song-badge ${rk<=3?'top-'+rk:''}">${rk<=3?['🥇','🥈','🥉'][rk-1]:'#'+rk}</span>`;
-  return`<li class="song-card${s.status==='sung'?' is-sung':''}${likes?' is-likes':''}">${badge}${s.status==='sung'?'<span class="song-stamp">已翻唱</span>':''}<h2>${esc(s.title)}</h2><p class="song-ver">${s.version?esc(s.version):'&nbsp;'}</p><div class="song-num"><b>${s.approximate?'<i>约</i>':''}${fmt(s.count)}</b><span>${esc(s.unit||'位点歌')}</span></div><div class="song-bar" aria-hidden="true"><i style="width:${pct}%"></i></div><div class="song-sources">${sources?'来自 '+sources:'此前公开点单'}</div></li>`
+  return`<li class="song-card${s.status==='sung'?' is-sung':''}${likes?' is-likes':''}">${badge}${s.status==='sung'?'<span class="song-stamp">已翻唱</span>':''}<h2>${esc(s.title)}</h2><p class="song-ver">${s.version?esc(s.version):'&nbsp;'}</p><div class="song-num"><b>${s.approximate?'<i>约</i>':''}${fmt(s.count)}</b><span>${esc(s.unit||'位点歌')}</span>${s.likes?`<em class="song-likes" title="点名评论的点赞合计，最高 ${fmt(s.topLike||0)} 赞">👍 ${fmt(s.likes)}</em>`:''}</div><div class="song-bar" aria-hidden="true"><i style="width:${pct}%"></i></div><div class="song-sources">${sources?'来自 '+sources:'此前公开点单'}</div></li>`
  }).join('');
  $('#song-empty').hidden=rows.length>0;
  const u=SONGS.updatedAt?new Date(SONGS.updatedAt+'T00:00:00').toLocaleDateString('zh-CN'):'—';
  $('#song-updated').textContent=`小本本更新于 ${u}`;
 }
 seg('#song-filters','filter',f=>{songFilter=f;renderSongs()});
+seg('#song-sorts','sort',v=>{songSort=v;renderSongs()});
 $('#song-search').addEventListener('input',renderSongs);
 
 function renderStatus(){const live=B.source==='live',chip=$('#live-chip'),u=B.updatedAt?new Date(B.updatedAt):null,ok=u&&!isNaN(u);
