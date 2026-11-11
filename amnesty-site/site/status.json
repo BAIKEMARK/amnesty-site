@@ -1,23 +1,23 @@
 {
   "result": "ok",
-  "people": 29740,
-  "comments": 38029,
-  "addedPeople": 6,
-  "addedComments": 16,
+  "people": 29759,
+  "comments": 38064,
+  "addedPeople": 19,
+  "addedComments": 35,
   "excluded": 0,
   "source": "fetch",
   "keywords": [
     "赦免"
   ],
-  "durationSeconds": 204.5,
-  "checkedAt": "2026-11-11T10:02:20+08:00",
-  "updatedAt": "2026-11-11T10:02:20+08:00",
+  "durationSeconds": 226.6,
+  "checkedAt": "2026-11-11T17:39:05+08:00",
+  "updatedAt": "2026-11-11T17:39:05+08:00",
   "lastError": "BilibiliError: 视频 BV1pzxp6KE9q 评论抓取未完成：BilibiliApiError: code=-503 服务暂不可用",
   "truncatedContents": 2,
   "truncatedMissing": 27482,
   "incremental": true,
-  "commentRows": 3212,
-  "changedContents": 31,
+  "commentRows": 3440,
+  "changedContents": 28,
   "privateMessages": 0,
   "backfill": "手动补 4 人：模板请愿文（动态下）",
   "truncatedList": [
@@ -41,5 +41,6 @@
       "reason": "max offset exceeded",
       "url": "https://www.bilibili.com/video/BV1pGnn67EC2"
     }
-  ]
+  ],
+  "privateError": "BilibiliApiError: code=-509 请求过于频繁，请稍后再试"
 }
