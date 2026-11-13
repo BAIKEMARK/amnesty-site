@@ -1,5 +1,5 @@
 {
-  "result": "ok",
+  "result": "failed",
   "people": 29799,
   "comments": 38151,
   "addedPeople": 10,
@@ -10,9 +10,9 @@
     "赦免"
   ],
   "durationSeconds": 262.0,
-  "checkedAt": "2026-11-13T02:29:08+08:00",
+  "checkedAt": "2026-11-13T09:13:42+08:00",
   "updatedAt": "2026-11-13T02:29:08+08:00",
-  "lastError": "BilibiliError: 视频 BV1pzxp6KE9q 评论抓取未完成：BilibiliApiError: code=-503 服务暂不可用",
+  "lastError": "BilibiliError: 视频 BV1pCxP6SESa 评论抓取未完成：BilibiliError: 评论列表提前结束，内容 117527183104684 的抓取未完成",
   "truncatedContents": 2,
   "truncatedMissing": 27482,
   "incremental": true,
