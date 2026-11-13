@@ -63,6 +63,25 @@ def is_comment_gone(exc: BaseException) -> bool:
     return f"code={COMMENT_GONE_CODE}" in str(exc)
 
 
+# mode=2（按时间倒序）翻页时，游标跨过的评论桶可能是空的：这一页 replies 为空、
+# cursor.is_end 也是 false，但 next_offset 已经换成下一页的。BV1pCxP6SESa 的第 2
+# 页就是这样（空页 → 第 3 页照常返回 3 条），属于正常状态，不能判定为抓取失败。
+# 只有游标原地不动才是真卡住；连续空页超过这个数才认为接口异常。
+MAX_EMPTY_PAGE_STREAK = 5
+
+
+def page_next_offset(cursor: dict[str, Any] | None) -> str:
+    """取出这一页返回的下一页游标。"""
+    reply = (cursor or {}).get("pagination_reply") or {}
+    return str(reply.get("next_offset") or "")
+
+
+def cursor_moved(cursor: dict[str, Any] | None, offset: str | None) -> bool:
+    """游标是否已换到下一页（哪怕这一页是空的）。"""
+    new_offset = page_next_offset(cursor)
+    return bool(new_offset) and new_offset != (offset or "")
+
+
 class BilibiliClient:
     API = "https://api.bilibili.com"
     SESSIONS_URL = "https://api.vc.bilibili.com/session_svr/v1/session_svr/get_sessions"
@@ -334,6 +353,7 @@ class BilibiliClient:
         offset: str | None = None
         next_page = 0
         seen_cursors: set[tuple[int, str]] = set()
+        empty_pages = 0
         floor = max(0, int(floor_ctime) - max(0, int(thread_refresh_seconds)))
 
         def add(item: dict[str, Any]) -> None:
@@ -369,6 +389,10 @@ class BilibiliClient:
                     return result
                 if data.get("replies") or (data.get("cursor") or {}).get("is_end"):
                     break
+                if cursor_moved(data.get("cursor"), offset):
+                    # 空页但游标已经往前走：B 站把这一页的评论桶跳过去了。用同一个
+                    # 游标重试只会拿到同样的空响应，直接跟新游标翻下一页。
+                    break
                 time.sleep(1.5 * (attempt + 1))  # 空壳响应先重试，别当成到底
             batch = data.get("replies") or []
 
@@ -389,9 +413,18 @@ class BilibiliClient:
             if cursor.get("is_end"):
                 return result
             if not batch:
-                raise BilibiliError(f"评论列表提前结束，内容 {oid} 的抓取未完成")
-            if floor and page_times and max(page_times) < floor:
-                # 整页都早于水位，后面的页只会更早。
+                if not cursor_moved(cursor, offset):
+                    # 游标原地不动还给了空页：这才是真的提前结束。
+                    raise BilibiliError(f"评论列表提前结束，内容 {oid} 的抓取未完成")
+                empty_pages += 1
+                if empty_pages > MAX_EMPTY_PAGE_STREAK:
+                    raise BilibiliError(
+                        f"连续 {MAX_EMPTY_PAGE_STREAK} 页空响应，内容 {oid} 的抓取未完成"
+                    )
+            else:
+                empty_pages = 0
+            if floor and page_times and max(page_times) <= floor:
+                # 整页都到水位了（含恰好等于水位），后面的页只会更早。
                 return result
             offset = (cursor.get("pagination_reply") or {}).get("next_offset")
             if not offset:
