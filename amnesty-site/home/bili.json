@@ -1,7 +1,7 @@
 {
  "uid": "3747573030456892",
  "space": "https://space.bilibili.com/3747573030456892",
- "follower": 287621,
+ "follower": 287937,
  "videos": [
   {
    "bvid": "BV1pGnn67EC2",
@@ -11,12 +11,12 @@
    "pubdate": 1792398083,
    "duration": 83,
    "pic": "https://i2.hdslb.com/bfs/archive/3e3f44c0c51ee095abf3b1dc8f2b01692c3ecf1c.jpg",
-   "view": 3329600,
-   "like": 187544,
-   "reply": 51418,
-   "favorite": 40524,
+   "view": 3330137,
+   "like": 187564,
+   "reply": 51471,
+   "favorite": 40530,
    "danmaku": 1192,
-   "share": 21537
+   "share": 21542
   },
   {
    "bvid": "BV1VXJf66Eyy",
@@ -26,10 +26,10 @@
    "pubdate": 1792473439,
    "duration": 141,
    "pic": "https://i1.hdslb.com/bfs/archive/831ca341b8a93c8a0baa37fccb3972f8a328fb13.jpg",
-   "view": 1537837,
-   "like": 101592,
-   "reply": 8353,
-   "favorite": 13923,
+   "view": 1538580,
+   "like": 101622,
+   "reply": 8370,
+   "favorite": 13926,
    "danmaku": 1739,
    "share": 4388
   },
@@ -41,8 +41,8 @@
    "pubdate": 1792553339,
    "duration": 188,
    "pic": "https://i2.hdslb.com/bfs/archive/f53e6394643cdefebe048e6f27e656c3f163b362.jpg",
-   "view": 254059,
-   "like": 17665,
+   "view": 254239,
+   "like": 17671,
    "reply": 2363,
    "favorite": 1804,
    "danmaku": 192,
@@ -56,9 +56,9 @@
    "pubdate": 1792575701,
    "duration": 168,
    "pic": "https://i1.hdslb.com/bfs/archive/13f94e2c8c8c6e5f10514091423bdf93b365cbc2.jpg",
-   "view": 246953,
-   "like": 20596,
-   "reply": 4063,
+   "view": 247070,
+   "like": 20601,
+   "reply": 4064,
    "favorite": 1931,
    "danmaku": 210,
    "share": 1042
@@ -71,12 +71,12 @@
    "pubdate": 1792641833,
    "duration": 244,
    "pic": "https://i1.hdslb.com/bfs/archive/c06c98221d24c31ea3f2f91ec7078ccc315c21d6.jpg",
-   "view": 1049799,
-   "like": 67059,
-   "reply": 57092,
-   "favorite": 9407,
+   "view": 1049954,
+   "like": 67065,
+   "reply": 56969,
+   "favorite": 9411,
    "danmaku": 848,
-   "share": 8374
+   "share": 8377
   },
   {
    "bvid": "BV1vynb6tEW5",
@@ -86,10 +86,10 @@
    "pubdate": 1792737365,
    "duration": 275,
    "pic": "https://i2.hdslb.com/bfs/archive/f55ddd9a8b4a5fbeed965245b5e97d115842360f.jpg",
-   "view": 170144,
-   "like": 11399,
-   "reply": 2649,
-   "favorite": 1377,
+   "view": 170237,
+   "like": 11405,
+   "reply": 2650,
+   "favorite": 1378,
    "danmaku": 99,
    "share": 307
   },
@@ -101,12 +101,12 @@
    "pubdate": 1792832364,
    "duration": 197,
    "pic": "https://i1.hdslb.com/bfs/archive/96d17d3a1318dfe4fb8cec6a086dbe03e949c237.jpg",
-   "view": 458300,
-   "like": 37830,
-   "reply": 7363,
-   "favorite": 9999,
-   "danmaku": 1607,
-   "share": 1416
+   "view": 459230,
+   "like": 37913,
+   "reply": 7367,
+   "favorite": 10026,
+   "danmaku": 1609,
+   "share": 1419
   },
   {
    "bvid": "BV1cYH56YESE",
@@ -116,12 +116,12 @@
    "pubdate": 1792922249,
    "duration": 194,
    "pic": "https://i1.hdslb.com/bfs/archive/435ba2ffd295d401069eaf736a53d00ae1f17021.jpg",
-   "view": 298331,
-   "like": 36629,
-   "reply": 5612,
-   "favorite": 3104,
+   "view": 298977,
+   "like": 36703,
+   "reply": 5619,
+   "favorite": 3115,
    "danmaku": 153,
-   "share": 1144
+   "share": 1145
   },
   {
    "bvid": "BV1SEn96HEp8",
@@ -131,12 +131,12 @@
    "pubdate": 1793003400,
    "duration": 205,
    "pic": "https://i1.hdslb.com/bfs/archive/872b57541ad5720a27075772cd602ca389b29775.jpg",
-   "view": 283075,
-   "like": 25477,
-   "reply": 17256,
-   "favorite": 4492,
-   "danmaku": 1709,
-   "share": 2074
+   "view": 283631,
+   "like": 25572,
+   "reply": 17293,
+   "favorite": 4511,
+   "danmaku": 1724,
+   "share": 2076
   },
   {
    "bvid": "BV12AxM6YEEE",
@@ -146,11 +146,11 @@
    "pubdate": 1793091965,
    "duration": 289,
    "pic": "https://i0.hdslb.com/bfs/archive/b9d1f5dbf467baaae1c01578eef5a151f39a8492.jpg",
-   "view": 106845,
-   "like": 13369,
-   "reply": 2631,
-   "favorite": 1435,
-   "danmaku": 282,
+   "view": 107015,
+   "like": 13392,
+   "reply": 2637,
+   "favorite": 1439,
+   "danmaku": 284,
    "share": 407
   },
   {
@@ -161,12 +161,12 @@
    "pubdate": 1793179800,
    "duration": 285,
    "pic": "https://i2.hdslb.com/bfs/archive/42dfb105551f6eee0ce77452471d209cc16a7fb1.jpg",
-   "view": 228294,
-   "like": 37938,
-   "reply": 2618,
-   "favorite": 3902,
-   "danmaku": 407,
-   "share": 945
+   "view": 229106,
+   "like": 38053,
+   "reply": 2638,
+   "favorite": 3923,
+   "danmaku": 408,
+   "share": 947
   },
   {
    "bvid": "BV1VTsd6VEUE",
@@ -176,11 +176,11 @@
    "pubdate": 1793245143,
    "duration": 236,
    "pic": "https://i1.hdslb.com/bfs/archive/eb44f5c17c3512df181b077ce188e32605f17d4a.jpg",
-   "view": 163349,
-   "like": 15897,
-   "reply": 2139,
-   "favorite": 1406,
-   "danmaku": 256,
+   "view": 163831,
+   "like": 15959,
+   "reply": 2143,
+   "favorite": 1412,
+   "danmaku": 258,
    "share": 280
   },
   {
@@ -191,12 +191,12 @@
    "pubdate": 1793331000,
    "duration": 361,
    "pic": "https://i1.hdslb.com/bfs/archive/a46ad8126d9b2be49eef2df29b8c5e12d453ab45.jpg",
-   "view": 97879,
-   "like": 10575,
-   "reply": 1999,
-   "favorite": 1251,
+   "view": 98217,
+   "like": 10610,
+   "reply": 2007,
+   "favorite": 1259,
    "danmaku": 261,
-   "share": 333
+   "share": 334
   },
   {
    "bvid": "BV1yuxk64EVT",
@@ -206,12 +206,12 @@
    "pubdate": 1793418000,
    "duration": 128,
    "pic": "https://i1.hdslb.com/bfs/archive/cfd1b6721b20fc2a585ffa24efbe93f23beef9d3.jpg",
-   "view": 39907,
-   "like": 7193,
+   "view": 40037,
+   "like": 7215,
    "reply": 691,
-   "favorite": 862,
+   "favorite": 865,
    "danmaku": 59,
-   "share": 99
+   "share": 100
   },
   {
    "bvid": "BV1pzxp6KE9q",
@@ -221,12 +221,12 @@
    "pubdate": 1793503800,
    "duration": 368,
    "pic": "https://i0.hdslb.com/bfs/archive/b8f56b76b8822ab27d69a3b756cbc741eb0cc9fd.jpg",
-   "view": 64405,
-   "like": 8660,
+   "view": 64534,
+   "like": 8672,
    "reply": 1678,
-   "favorite": 766,
+   "favorite": 768,
    "danmaku": 114,
-   "share": 155
+   "share": 156
   },
   {
    "bvid": "BV1G8xb6iEx8",
@@ -236,10 +236,10 @@
    "pubdate": 1793590200,
    "duration": 298,
    "pic": "https://i0.hdslb.com/bfs/archive/f1f8bfa7bb0ba8a6033652e922d9c61c5a227077.jpg",
-   "view": 40292,
-   "like": 4451,
-   "reply": 1771,
-   "favorite": 364,
+   "view": 40400,
+   "like": 4459,
+   "reply": 1774,
+   "favorite": 365,
    "danmaku": 114,
    "share": 119
   },
@@ -251,12 +251,12 @@
    "pubdate": 1793676600,
    "duration": 265,
    "pic": "https://i2.hdslb.com/bfs/archive/9d643cfccd7d86a62a99745d5820f8d8db517253.jpg",
-   "view": 42985,
-   "like": 5443,
-   "reply": 1925,
-   "favorite": 537,
+   "view": 43187,
+   "like": 5464,
+   "reply": 1931,
+   "favorite": 539,
    "danmaku": 256,
-   "share": 111
+   "share": 112
   },
   {
    "bvid": "BV1zdxS6uE4j",
@@ -266,12 +266,12 @@
    "pubdate": 1793763670,
    "duration": 143,
    "pic": "https://i2.hdslb.com/bfs/archive/2c6013b1369baed0687e9084689ea5532a2ac578.jpg",
-   "view": 396452,
-   "like": 38678,
-   "reply": 5043,
-   "favorite": 4903,
-   "danmaku": 344,
-   "share": 2166
+   "view": 399616,
+   "like": 38816,
+   "reply": 5054,
+   "favorite": 4934,
+   "danmaku": 348,
+   "share": 2179
   },
   {
    "bvid": "BV1eBxZ6XEQu",
@@ -281,12 +281,12 @@
    "pubdate": 1793851461,
    "duration": 322,
    "pic": "https://i0.hdslb.com/bfs/archive/31a2af44add9d9883baa5f27be046c38d7bee83b.jpg",
-   "view": 38406,
-   "like": 4358,
-   "reply": 1848,
-   "favorite": 430,
+   "view": 38542,
+   "like": 4367,
+   "reply": 1854,
+   "favorite": 432,
    "danmaku": 150,
-   "share": 91
+   "share": 92
   },
   {
    "bvid": "BV1p84i6kEsZ",
@@ -296,12 +296,12 @@
    "pubdate": 1793939851,
    "duration": 188,
    "pic": "https://i0.hdslb.com/bfs/archive/d1d6bd50956f8d9f99d3b38ba2adaf78463d6207.jpg",
-   "view": 83596,
-   "like": 9248,
-   "reply": 2150,
-   "favorite": 872,
+   "view": 84186,
+   "like": 9284,
+   "reply": 2159,
+   "favorite": 876,
    "danmaku": 71,
-   "share": 278
+   "share": 279
   },
   {
    "bvid": "BV1Tt476wExU",
@@ -311,10 +311,10 @@
    "pubdate": 1794023359,
    "duration": 271,
    "pic": "https://i2.hdslb.com/bfs/archive/80cfa0951497c3d5f8013d7abfc5c196905a27ce.jpg",
-   "view": 26929,
-   "like": 4235,
+   "view": 27041,
+   "like": 4246,
    "reply": 988,
-   "favorite": 359,
+   "favorite": 360,
    "danmaku": 52,
    "share": 54
   },
@@ -326,9 +326,9 @@
    "pubdate": 1794108445,
    "duration": 365,
    "pic": "https://i0.hdslb.com/bfs/archive/9747c633c2b7e81f7ab65f21a784416d9c99b0ac.jpg",
-   "view": 19763,
-   "like": 3677,
-   "reply": 1176,
+   "view": 19852,
+   "like": 3682,
+   "reply": 1179,
    "favorite": 245,
    "danmaku": 211,
    "share": 34
@@ -341,8 +341,8 @@
    "pubdate": 1794198815,
    "duration": 259,
    "pic": "https://i0.hdslb.com/bfs/archive/3f707113649f8c1d0e60b709fd81215555e2077e.jpg",
-   "view": 19784,
-   "like": 2431,
+   "view": 19923,
+   "like": 2439,
    "reply": 1152,
    "favorite": 167,
    "danmaku": 34,
@@ -356,11 +356,11 @@
    "pubdate": 1794318287,
    "duration": 312,
    "pic": "https://i2.hdslb.com/bfs/archive/191c626f4a07dea008f3851843214a31f970c786.jpg",
-   "view": 40834,
-   "like": 4085,
-   "reply": 1153,
-   "favorite": 487,
-   "danmaku": 417,
+   "view": 41262,
+   "like": 4110,
+   "reply": 1156,
+   "favorite": 489,
+   "danmaku": 421,
    "share": 99
   },
   {
@@ -371,12 +371,12 @@
    "pubdate": 1794458358,
    "duration": 407,
    "pic": "https://i0.hdslb.com/bfs/archive/eb4f9ad25f3bcb11fb1fb196aba7aae0c621871a.jpg",
-   "view": 40777,
-   "like": 6949,
-   "reply": 2307,
-   "favorite": 881,
-   "danmaku": 213,
-   "share": 167
+   "view": 41274,
+   "like": 6995,
+   "reply": 2319,
+   "favorite": 887,
+   "danmaku": 215,
+   "share": 169
   },
   {
    "bvid": "BV1uNWC6AE1p",
@@ -386,12 +386,12 @@
    "pubdate": 1794630511,
    "duration": 446,
    "pic": "https://i0.hdslb.com/bfs/archive/12c11f7105f960a91e26e1a287a7384a79defd70.jpg",
-   "view": 62582,
-   "like": 7936,
-   "reply": 3791,
-   "favorite": 733,
-   "danmaku": 290,
-   "share": 147
+   "view": 63774,
+   "like": 8030,
+   "reply": 3817,
+   "favorite": 740,
+   "danmaku": 297,
+   "share": 150
   },
   {
    "bvid": "BV1aYsw6RErS",
@@ -401,12 +401,12 @@
    "pubdate": 1794808975,
    "duration": 152,
    "pic": "https://i2.hdslb.com/bfs/archive/ee5f506be8d844c8a574591116273f8af5ed5f2d.jpg",
-   "view": 33179,
-   "like": 4232,
-   "reply": 830,
-   "favorite": 308,
-   "danmaku": 32,
-   "share": 72
+   "view": 34260,
+   "like": 4316,
+   "reply": 862,
+   "favorite": 316,
+   "danmaku": 33,
+   "share": 75
   },
   {
    "bvid": "BV1Mzs166Eq9",
@@ -416,12 +416,12 @@
    "pubdate": 1794977091,
    "duration": 202,
    "pic": "https://i1.hdslb.com/bfs/archive/a083bdbc9d996604abf693e97f428f4836ceece8.jpg",
-   "view": 11677,
-   "like": 2234,
-   "reply": 799,
-   "favorite": 144,
-   "danmaku": 41,
-   "share": 17
+   "view": 12847,
+   "like": 2504,
+   "reply": 838,
+   "favorite": 158,
+   "danmaku": 42,
+   "share": 19
   },
   {
    "bvid": "BV13Psb6hEcm",
@@ -431,14 +431,14 @@
    "pubdate": 1795078742,
    "duration": 251,
    "pic": "https://i0.hdslb.com/bfs/archive/a27ff7714421452eb83f4bb3be0e47ad22b8d811.jpg",
-   "view": 4945,
-   "like": 1287,
-   "reply": 621,
-   "favorite": 101,
-   "danmaku": 111,
-   "share": 13
+   "view": 17853,
+   "like": 4660,
+   "reply": 1567,
+   "favorite": 365,
+   "danmaku": 319,
+   "share": 41
   }
  ],
  "source": "ci",
- "updatedAt": "2026-11-19T18:33:18+08:00"
+ "updatedAt": "2026-11-20T04:52:26+08:00"
 }
