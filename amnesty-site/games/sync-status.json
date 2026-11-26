@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-25T22:42:58+08:00",
+ "updatedAt": "2026-11-26T08:36:14+08:00",
  "real": {
   "admitted": 0,
   "pending": 0,
@@ -10,8 +10,10 @@
   "realTotal": 800
  },
  "daily": {
-  "created": [],
-  "scheduledThrough": "2026-11-28",
+  "created": [
+   "2026-11-29"
+  ],
+  "scheduledThrough": "2026-11-29",
   "aiTrapsUnusedRecently": 0,
   "warnings": []
  }
